@@ -119,3 +119,87 @@ class NutritionalValue(models.Model):
     def __str__(self):
         #valueStr=str(getAminoVector(self))
         return self.description #+ valueStr #+ str(getAminoVector(self))
+    
+class Food(models.Model):
+    # food: name, category, nutriment info...
+    food_name = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date added', null=True, blank=True,auto_now_add=True) #models.DateTimeField('date published',null=timezone.now())
+    # question_text = models.CharField(max_length=200)
+    # pub_date = models.DateTimeField('date published')
+    food_category = models.IntegerField(null=True)
+    food_dbid = models.IntegerField(default=0)
+    nutritional_value = models.ForeignKey('NutritionalValue', on_delete=models.CASCADE,null=True)
+    efficiency = models.FloatField(null=True)
+
+    def __str__(self):
+        return self.getNameBegin() #self.food_name
+    def getNameBegin(self):
+        # return two first words of food name
+        fullName = self.food_name
+        nameSplit = fullName.split(',')
+        if len(nameSplit)>1:
+            shortName = nameSplit[0]+','+nameSplit[1]
+        else:
+            shortName = fullName
+        return shortName
+    class Meta:
+        ordering = ['food_name']
+        
+class Recipe(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=15, null=True, blank=True) # or a choice
+    date_added = models.DateTimeField('date added', null=True, blank=True,auto_now_add=True)
+    efficiency = models.FloatField(null=True)
+    def __str__(self):
+        return self.title
+    def get_nutritional_value(self):
+        # ingreds=self.ingredients.all()
+        ingreds = Ingredient.objects.filter(recipe = self.pk)
+        ingrValues=[ingr.get_nutritional_value() for ingr in ingreds]
+        return sum(ingrValues[1:],ingrValues[0])
+    
+DEFAULT_FOOD_ID = 1
+class Ingredient(models.Model):
+    recipe = models.ForeignKey(Recipe)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, default=DEFAULT_FOOD_ID)
+    quantity = models.FloatField()
+    def __str__(self):
+        # return (str(self.quantity*100))
+        return (str(self.quantity*100)+' g of '+self.food.food_name)
+    def get_nutritional_value(self):
+        return (self.quantity*self.food.nutritional_value)
+    
+class FoodPair(models.Model):
+    foodOneId = models.IntegerField()
+    foodTwoId = models.IntegerField() #models.ForeignKey(Food)
+    pair_name = models.CharField(max_length=30, null=True)
+    bestEfficiency = models.FloatField(null=True)
+    bestProportion = models.FloatField(null=True)
+    angleAbsolute = models.FloatField(null=True)
+    angleIncomplete = models.FloatField(null=True)
+    def __str__(self):
+        if self.pair_name is None:
+            pairName = 'no name'
+        else:
+            pairName = self.pair_name
+        return pairName
+
+class Nutriment(models.Model):
+    # a nutrient (for instance an amino acid)
+    dbid = models.IntegerField()
+    internal_name = models.CharField(max_length=10)
+    public_name = models.CharField(max_length=20)
+    unit = models.CharField(max_length=10)
+    description = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=30)
+    def __str__(self):
+        return self.public_name
+
+class RelativeAminoScore(models.Model):
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, default=DEFAULT_FOOD_ID)
+    aminoAcid = models.ForeignKey(Nutriment, on_delete=models.CASCADE)
+    score = models.FloatField()
+    # scoringPattern
+    def __str__(self):
+        return 'score of '+self.aminoAcid.internal_name+'in '+self.food.food_name+str(self.score)
