@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Bungee|Bungee Shade|Roboto|Amatic+SC">
+    <!--<link rel="stylesheet" href="style.css" />-->
+    <link rel="stylesheet" href="/foodapp{% static "foodapp/bluestyle.css" %}" />
+    <!--<link href="{{STATIC_URL}}foodapp/style.css" rel="stylesheet" type="text/css">-->
+    <title>{% block title %}Tetramino - helping you balance amino acid intakes{% endblock %}</title>
+</head>
+
+<!--<body>-->
+<body id="{% block section %}section-generic{% endblock %}">
+     <!--style="clear:both;"-->
+    <div id="titlebar">
+        <p>Balamino</p>
+    </div>
+    <div id="headbar">
+        {% block headbar %}
+        <ul>
+            <li class="nav-home"><a href="/foodapp/">Home</a></li>
+            <li class="nav-foods"><a href="/foodapp/listFoods/" class="foods">Foods</a></li>
+            <li class="nav-foodpairs"><a href="/foodapp/choosePair/">Food pairs</a></li>
+            <li class="nav-recipes"><a href="/foodapp/recipeTable/">Recipes</a></li>
+            <li class="nav-aminos"><a href="/foodapp/listAminoAcids/">Amino acids</a></li>
+            <li class="nav-about"><a href="/foodapp/about/">About</a></li>
+            <!-- menus pairs contact blog news -->
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="subhead">
+        {% block subhead %}{% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div id="footer">
+        {% block footer %}Copyright &copy; Tetramino 2016{% endblock %}
+    </div>
+
+
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100988280); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100988280ns.gif" /></p></noscript>
+
+</body>
+</html>
