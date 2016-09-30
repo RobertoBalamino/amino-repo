@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Bungee|Bungee Shade|Roboto|Amatic+SC">
     <!--<link rel="stylesheet" href="style.css" />-->
-    <link rel="stylesheet" href="/foodapp{% static "foodapp/bluestyle.css" %}" />
+    <link rel="stylesheet" href="/aminoApp{% static "aminoApp/bluestyle.css" %}" />
     <!--<link href="{{STATIC_URL}}foodapp/style.css" rel="stylesheet" type="text/css">-->
     <title>{% block title %}Tetramino - helping you balance amino acid intakes{% endblock %}</title>
 </head>
@@ -19,12 +19,12 @@
     <div id="headbar">
         {% block headbar %}
         <ul>
-            <li class="nav-home"><a href="/foodapp/">Home</a></li>
-            <li class="nav-foods"><a href="/foodapp/listFoods/" class="foods">Foods</a></li>
-            <li class="nav-foodpairs"><a href="/foodapp/choosePair/">Food pairs</a></li>
-            <li class="nav-recipes"><a href="/foodapp/recipeTable/">Recipes</a></li>
-            <li class="nav-aminos"><a href="/foodapp/listAminoAcids/">Amino acids</a></li>
-            <li class="nav-about"><a href="/foodapp/about/">About</a></li>
+            <li class="nav-home"><a href="/aminoApp/">Home</a></li>
+            <li class="nav-foods"><a href="/aminoApp/listFoods/" class="foods">Foods</a></li>
+            <li class="nav-foodpairs"><a href="/aminoApp/choosePair/">Food pairs</a></li>
+            <li class="nav-recipes"><a href="/aminoApp/recipeTable/">Recipes</a></li>
+            <li class="nav-aminos"><a href="/aminoApp/listAminoAcids/">Amino acids</a></li>
+            <li class="nav-about"><a href="/aminoApp/about/">About</a></li>
             <!-- menus pairs contact blog news -->
         </ul>
         {% endblock %}
