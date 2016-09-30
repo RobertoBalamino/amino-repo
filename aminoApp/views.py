@@ -12,13 +12,13 @@ from django.db.models import Q #or in queryset
 import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
-from .models import Recipe, IngredientNew, FoodPair, Nutriment #, NutrientDefinition
+from .models import Recipe, Ingredient, FoodPair, Nutriment #, NutrientDefinition
 
 #from utilities.loadFromUsda import loadFoodNutrimentInfo
-from foodapp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
-from foodapp.utilityFunctions import getAminoAcidNames, saveRelativeAminoScores
-from foodapp.utilityFunctions import analyseFoodPair, getBestProportionsForFoods, getCustomPygalStyle
-from foodapp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie
+from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
+from aminoApp.utilityFunctions import getAminoAcidNames, saveRelativeAminoScores
+from aminoApp.utilityFunctions import analyseFoodPair, getBestProportionsForFoods, getCustomPygalStyle
+from aminoApp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie
 from .forms import FoodPairForm, MenuForm
 
 from .forms import IngredientFormSet, RecipeForm, NumberForm
@@ -27,7 +27,7 @@ from .forms import IngredientFormSet, RecipeForm, NumberForm
 import pygal
 
 class IndexView(generic.ListView):
-    template_name = 'foodapp/index.html'
+    template_name = 'aminoApp/index.html'
     context_object_name = 'latest_food_list'
 
     def get_queryset(self):
@@ -39,7 +39,7 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = Food
-    template_name = 'foodapp/detail.html'
+    template_name = 'aminoApp/detail.html'
 
 
 def __unicode__(self):
@@ -48,7 +48,7 @@ def __unicode__(self):
 def loadFoodNames(request):
     #load food non-nutritional information from text file
     #f = open(r'C:\Users\aurelien\Documents\Visual Studio 2015\Projects\ParseNutritionalValues\Data\FOOD_DES.txt','r')
-    f = open(r'/home/tetramino/djangAmino/foodapp/sourcedata/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     s=''
     response = HttpResponse()
@@ -61,13 +61,13 @@ def loadFoodNames(request):
         s=s+foodName+' and '
         #if idOfLine==iFood:
         response.write("<p>"+foodName+'('+str(foodId)+").")
-        response.write('<a href="/foodapp/isFoodInDatabase/'+str(foodId)+'/">in database?</a></p>')
+        response.write('<a href="/aminoApp/isFoodInDatabase/'+str(foodId)+'/">in database?</a></p>')
     # should we also create Food instances? yes
     return response
 
 def loadFoodNamesKnowingIfLoaded(request):
     # as opposed to previous function loadFoodNames, we also show if food is already in the database
-    f = open(r'/home/tetramino/djangAmino/foodapp/sourcedata/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     response = HttpResponse()
     loadedFoodIds=Food.objects.values_list('food_dbid',flat=True)
@@ -84,8 +84,8 @@ def loadFoodNamesKnowingIfLoaded(request):
             if foodId in loadedFoodIds:
                 response.write('Already in database</p>')
             else:
-                response.write('<a href="/foodapp/loadFoodInDatabase/'+str(foodId)+'/">load</a></p>')
-        # response.write('<a href="/foodapp/isFoodInDatabase/'+str(foodId)+'/">in database?</a></p>')
+                response.write('<a href="/aminoApp/loadFoodInDatabase/'+str(foodId)+'/">load</a></p>')
+        # response.write('<a href="/aminoApp/isFoodInDatabase/'+str(foodId)+'/">in database?</a></p>')
     return response
 
 # check food id: is it in sql database, is it loaded
@@ -98,7 +98,7 @@ def isFoodInDatabase(request, food_dbid):
         food=Food.objects.get(food_dbid=food_dbid)
         response.write("There is! It is called "+food.food_name)
     except:
-        response.write('There is  not. Create it <a href="/foodapp/loadFoodInDatabase/'+str(food_dbid)+'/">here</a>')
+        response.write('There is  not. Create it <a href="/aminoApp/loadFoodInDatabase/'+str(food_dbid)+'/">here</a>')
     #question = get_object_or_404(Food, food_dbid=food_dbid)
 
     return response
@@ -108,7 +108,7 @@ def isFoodInDatabase(request, food_dbid):
 def loadFoodInDatabase(request, food_dbid):
     # warning: food_dbid is a string! see type(food_dbid).__name__
     #load food non-nutritional information from text file
-    #f = open(r'/home/tetramino/djangAmino/foodapp/sourcedata/FOOD_DES.txt','r')
+    #f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES.txt','r')
     response=HttpResponse('Loading food in db <br>')
 
     if len(Food.objects.filter(food_dbid=food_dbid))>0:
