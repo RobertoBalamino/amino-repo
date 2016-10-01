@@ -48,7 +48,7 @@ def __unicode__(self):
 def loadFoodNames(request):
     #load food non-nutritional information from text file
     #f = open(r'C:\Users\aurelien\Documents\Visual Studio 2015\Projects\ParseNutritionalValues\Data\FOOD_DES.txt','r')
-    f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/djangAmino/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     s=''
     response = HttpResponse()
@@ -67,7 +67,7 @@ def loadFoodNames(request):
 
 def loadFoodNamesKnowingIfLoaded(request):
     # as opposed to previous function loadFoodNames, we also show if food is already in the database
-    f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/djangAmino/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     response = HttpResponse()
     loadedFoodIds=Food.objects.values_list('food_dbid',flat=True)
@@ -115,7 +115,7 @@ def loadFoodInDatabase(request, food_dbid):
         response.write('food id already in database! we do not add it once more')
     else:
         foodFound=0
-        with open(r'/home/tetramino/djangAmino/foodapp/sourcedata/FOOD_DES_unicorrected.txt','r') as fp:
+        with open(r'/home/tetramino/djangAmino/foodapp/sourceData/FOOD_DES_unicorrected.txt','r') as fp:
             for lineInFile in fp:
                 splLine=lineInFile.split('~')
                 foodId=int(splLine[1])
