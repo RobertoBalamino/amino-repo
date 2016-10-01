@@ -9,7 +9,7 @@ from pygal.style import Style
 def readFoodNutrimentInfo(searchId):
     # searchId: int, USDA database food id
     nutValue=dict.fromkeys([501])
-    with open(r'/home/tetramino/djangAmino/foodapp/sourcedata/NUT_DATA.txt','r') as fp:
+    with open(r'/home/tetramino/djangAmino/aminoApp/sourceData/NUT_DATA_selected.txt','r') as fp:
         for lineInFile in fp:
             splLine=lineInFile.split('~')
             idOfLine=int(splLine[1])
