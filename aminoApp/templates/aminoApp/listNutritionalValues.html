@@ -1,0 +1,30 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+<!--{% block title %}Tetramino - foods in the database{% endblock %}-->
+
+{% block content %}
+
+
+<!--table-->
+<h2>Nutritional values for <a href="/showFood/{{food.food_dbid}}">{{food.getNameWithoutSaltInfo}}</a>  </h2>
+<!--<table style="width:100%">-->
+<!-- {{food.food_name}} -->
+<table>
+  <tr>
+    <th>Nutrient</th>
+    <th>Value</th>
+    <th>Unit</th>
+    <th>Category</th>
+  </tr>
+    {% for tup in orderedTupleList %}
+  <tr>
+    <td>{{tup.0}}</td>
+    <td>{{tup.1}}</td>
+    <td>{{tup.2}}</td>
+    <td>{{tup.3}}</td>
+  </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

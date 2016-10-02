@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 #from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.shortcuts import redirect
 #from django.http import Http404
 from django.utils import timezone
@@ -47,8 +47,7 @@ def __unicode__(self):
 
 def loadFoodNames(request):
     #load food non-nutritional information from text file
-    #f = open(r'C:\Users\aurelien\Documents\Visual Studio 2015\Projects\ParseNutritionalValues\Data\FOOD_DES.txt','r')
-    f = open(r'/home/tetramino/djangAmino/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/aminoProject/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     s=''
     response = HttpResponse()
@@ -67,7 +66,7 @@ def loadFoodNames(request):
 
 def loadFoodNamesKnowingIfLoaded(request):
     # as opposed to previous function loadFoodNames, we also show if food is already in the database
-    f = open(r'/home/tetramino/djangAmino/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
+    f = open(r'/home/tetramino/aminoProject/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r')
     idOfLine=0
     response = HttpResponse()
     loadedFoodIds=Food.objects.values_list('food_dbid',flat=True)
@@ -84,8 +83,7 @@ def loadFoodNamesKnowingIfLoaded(request):
             if foodId in loadedFoodIds:
                 response.write('Already in database</p>')
             else:
-                response.write('<a href="/aminoApp/loadFoodInDatabase/'+str(foodId)+'/">load</a></p>')
-        # response.write('<a href="/aminoApp/isFoodInDatabase/'+str(foodId)+'/">in database?</a></p>')
+                response.write('<a href="/loadFoodInDatabase/'+str(foodId)+'/">load</a></p>')
     return response
 
 # check food id: is it in sql database, is it loaded
@@ -108,14 +106,14 @@ def isFoodInDatabase(request, food_dbid):
 def loadFoodInDatabase(request, food_dbid):
     # warning: food_dbid is a string! see type(food_dbid).__name__
     #load food non-nutritional information from text file
-    #f = open(r'/home/tetramino/djangAmino/aminoApp/sourcedata/FOOD_DES.txt','r')
+    #f = open(r'/home/tetramino/aminoProject/aminoApp/sourcedata/FOOD_DES.txt','r')
     response=HttpResponse('Loading food in db <br>')
 
     if len(Food.objects.filter(food_dbid=food_dbid))>0:
         response.write('food id already in database! we do not add it once more')
     else:
         foodFound=0
-        with open(r'/home/tetramino/djangAmino/foodapp/sourceData/FOOD_DES_unicorrected.txt','r') as fp:
+        with open(r'/home/tetramino/aminoProject/aminoApp/sourceData/FOOD_DES_unicorrected.txt','r') as fp:
             for lineInFile in fp:
                 splLine=lineInFile.split('~')
                 foodId=int(splLine[1])
@@ -129,9 +127,6 @@ def loadFoodInDatabase(request, food_dbid):
             food = Food(food_name=foodName, food_dbid=int(food_dbid),food_category=foodcat)
             # newfood.save()
             # we wait until we know nut info is ok to save food
-            # response.write("Food id "+str(food_dbid)+'('+foodName+') added in database.')
-            # response.write('Look up its details here (IMPLEMENT)')
-            # response.write('Read nutritional information from source here <a href="/foodapp/loadFoodNutInfoInDatabase/'+str(food_dbid)+'/">here</a>')
 
             # load food nutriment and put in sql
             searchId=int(food_dbid)
@@ -161,7 +156,7 @@ def loadFoodInDatabase(request, food_dbid):
                 # response.write('foodNutVal should be aved')
                 food.nutritional_value=foodNutVal
                 food.save()
-                return redirect("/foodapp/listFoodNutValues/"+str(food_dbid))
+                return redirect("/listFoodNutValues/"+str(food_dbid))
                 # return response
             else:
                 missingKeys=[k for k in necessaryKeys if k not in nutValue.keys()]
@@ -171,26 +166,26 @@ def loadFoodInDatabase(request, food_dbid):
     return response
 
 
-# load food nutriment and put in sql
-def loadFoodNutrimentInfo(request,food_dbid):
-    searchId=int(food_dbid)
-    response=HttpResponse('Loaded nut info: ')
-    nutValue=readFoodNutrimentInfo(searchId)
-    for nutid in nutValue:
-        response.write(str(nutid)+':'+str(nutValue[nutid])+'<br>')
-    food=Food.objects.get(food_dbid=food_dbid)
-    # very unsatisfactory this:
-    foodNutVal=NutritionalValue(trp_g=nutValue[501],thr_g=nutValue[502],ile_g=nutValue[503],leu_g=nutValue[504],lys_g=nutValue[505],met_g=nutValue[506],
-        cys_g=nutValue[507],phe_g=nutValue[508],tyr_g=nutValue[509],val_g=nutValue[510],his_g=nutValue[512],
-        prot=nutValue[203],fat=nutValue[204],carbo=nutValue[205],energ=nutValue[208],
-        sugars=nutValue[269],ca=nutValue[301],fe=nutValue[303],mg=nutValue[304],p=nutValue[305],k=nutValue[306],
-        description='nutrValueForFood'+food_dbid)
-    # nullable fields: prot_adj=nutValue[257],
-    foodNutVal.save()
-    response.write('foodNutVal should be aved')
-    food.nutritional_value=foodNutVal
-    food.save()
-    return response
+# # load food nutriment and put in sql
+# def loadFoodNutrimentInfo(request,food_dbid):
+#     searchId=int(food_dbid)
+#     response=HttpResponse('Loaded nut info: ')
+#     nutValue=readFoodNutrimentInfo(searchId)
+#     for nutid in nutValue:
+#         response.write(str(nutid)+':'+str(nutValue[nutid])+'<br>')
+#     food=Food.objects.get(food_dbid=food_dbid)
+#     # very unsatisfactory this:
+#     foodNutVal=NutritionalValue(trp_g=nutValue[501],thr_g=nutValue[502],ile_g=nutValue[503],leu_g=nutValue[504],lys_g=nutValue[505],met_g=nutValue[506],
+#         cys_g=nutValue[507],phe_g=nutValue[508],tyr_g=nutValue[509],val_g=nutValue[510],his_g=nutValue[512],
+#         prot=nutValue[203],fat=nutValue[204],carbo=nutValue[205],energ=nutValue[208],
+#         sugars=nutValue[269],ca=nutValue[301],fe=nutValue[303],mg=nutValue[304],p=nutValue[305],k=nutValue[306],
+#         description='nutrValueForFood'+food_dbid)
+#     # nullable fields: prot_adj=nutValue[257],
+#     foodNutVal.save()
+#     response.write('foodNutVal should be aved')
+#     food.nutritional_value=foodNutVal
+#     food.save()
+#     return response
 
 
 def getFoodEfficiency(request,food_dbid):
@@ -221,7 +216,7 @@ def listFoodValues(request,food_dbid):
     orderedTupleList = sorted(tupleList, key=lambda tup:tup[3])
 
     context = {'orderedTupleList':orderedTupleList,'food': food}
-    return render(request, 'foodapp/listNutritionalValues.html', context)
+    return render(request, 'aminoApp/listNutritionalValues.html', context)
 
 def pairSearchReturn(request):
     if 'foodOne' in request.GET and 'foodTwo' in request.GET:
@@ -229,7 +224,7 @@ def pairSearchReturn(request):
         foodOne=Food.objects.get(food_dbid=request.GET['foodOne'])
         foodTwo=Food.objects.get(food_dbid=request.GET['foodTwo'])
         context = analyseFoodPair(foodOne,foodTwo)
-        response = render(request, 'foodapp/inspectFoodPair.html', context)
+        response = render(request, 'aminoApp/inspectFoodPair.html', context)
     else:
         message = 'You submitted an empty form.'
         response = HttpResponse(message)
@@ -248,8 +243,8 @@ def pairSearchReturnCreation(request):
                            bestEfficiency=context['bestEfficiency'],bestProportion=context['bestPropOne'],
                            )
         newpair.save()
-        return redirect("/foodapp/inspectLoadedFoodPair/"+str(newpair.pk))
-        # response = render(request, 'foodapp/inspectFoodPair.html', context)
+        return redirect("/inspectLoadedFoodPair/"+str(newpair.pk))
+
     else:
         message = 'You submitted an empty form.'
         response = HttpResponse(message)
@@ -264,57 +259,41 @@ def inspectLoadedFoodPair(request,pair_id):
     pair.bestEfficiency = context['bestEfficiency']
     pair.bestProportion = context['bestPropOne']
     pair.save()
-    return render(request, 'foodapp/inspectFoodPair.html', context)
+    return render(request, 'aminoApp/inspectFoodPair.html', context)
     # d) save menu based on food pair
 
 def bestProportionsOfRecipeFoods(request,recipeid):
     # recipe=Recipe.objects.get(pk=recipeid)
-    ingreds = IngredientNew.objects.filter(recipe = recipeid)
+    ingreds = Ingredient.objects.filter(recipe = recipeid)
     foods=[ingr.food for ingr in ingreds]
     context = getBestProportionsForFoods(foods)
-    return render(request, 'foodapp/bestProportionsFoods.html', context)
+    return render(request, 'aminoApp/bestProportionsFoods.html', context)
 
-# def inspectFoodPair(request,food_dbid_one,food_dbid_two):
-#     foodOne=Food.objects.get(food_dbid=food_dbid_one)
-#     foodTwo=Food.objects.get(food_dbid=food_dbid_two)
-#     context = analyseFoodPair(foodOne,foodTwo)
-#     return render(request, 'foodapp/inspectFoodPair.html', context)
-#     # d) save menu based on food pair
 
-# def getMenuEfficiency(request,menuid):
-#     menu=Menu.objects.get(pk=menuid)
-#     menuNutrValue=menu.get_nutritional_value()
-#     menuEff=getAminoEfficiencyFromNutrimentValue(menuNutrValue)
-#     return HttpResponse("Efficiency of menu "+str(menu)+": "+str(menuEff))
 
 def showFoodList(request):
     foodList= Food.objects.order_by('food_name') #('-pub_date')[:25]
     context = {'foodList': foodList}
-    return render(request, 'foodapp/foodList.html', context)
+    return render(request, 'aminoApp/foodList.html', context)
 
 def showFoodTable(request):
     foodList= Food.objects.order_by('-pub_date')[:25]
     context = {'foodList': foodList}
-    return render(request, 'foodapp/foodTable.html', context)
-
-# def showMenuTable(request):
-#     menuList= Menu.objects.order_by('-name')[:25]
-#     context = {'menuList': menuList}
-#     return render(request, 'foodapp/menuTable.html', context)
+    return render(request, 'aminoApp/foodTable.html', context)
 
 def showRecipeTable(request):
     recipeList= Recipe.objects.order_by('-date_added')[:25]
     context = {'recipeList': recipeList}
-    return render(request, 'foodapp/recipeTable.html', context)
+    return render(request, 'aminoApp/recipeTable.html', context)
 
 def showFoodPairList(request):
     pairList= FoodPair.objects.order_by('-pk')[:25]
     context = {'pairList': pairList}
-    return render(request, 'foodapp/foodPairTable.html', context)
+    return render(request, 'aminoApp/foodPairTable.html', context)
 
 def choosePair(request):
     form = FoodPairForm() #FoodForm(initial={'foodOne': 61})
-    return render(request, 'foodapp/foodPairForm.html', {'form': form})
+    return render(request, 'aminoApp/foodPairForm.html', {'form': form})
 
 
 
@@ -353,7 +332,7 @@ def plotFoodAmino(request,food_dbid):
     context = {'food': food,'chart':chartAbsolute,'propChart':chart_prop,
             'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid}
 
-    return render(request, 'foodapp/aminoPlot.html', context)
+    return render(request, 'aminoApp/aminoPlot.html', context)
 
 def plotRecipeAmino(request,recipeid):
     recipe=Recipe.objects.get(pk=recipeid)
@@ -362,7 +341,7 @@ def plotRecipeAmino(request,recipeid):
     menuAminoVector = menuNutrValue.getAminoVector()
     projectVectorOnComplete = getAminoProportionsOfComplete(menuAminoVector)
     equivCompleteVector = projectVectorOnComplete['projected']
-    ingreds = IngredientNew.objects.filter(recipe = recipeid) # ingreds = recipe.ingredients.all()
+    ingreds = Ingredient.objects.filter(recipe = recipeid) # ingreds = recipe.ingredients.all()
 
     custom_style = getCustomPygalStyle()
     bar_chart = pygal.StackedBar(title=u'Amino acid quantities (g)',style=custom_style)                                            # Then create a bar graph object
@@ -386,20 +365,20 @@ def plotRecipeAmino(request,recipeid):
     chart=bar_chart.render_data_uri()
     chart_props=bar_chart_props.render_data_uri()
     context = {'recipe': recipe,'chart':chart,'chart_props':chart_props}
-    return render(request, 'foodapp/menuAminoPlot.html', context)
+    return render(request, 'aminoApp/menuAminoPlot.html', context)
 
 def about(request):
-    return render(request, 'foodapp/about.html')
+    return render(request, 'aminoApp/about.html')
 
 def aboutSomething(request,subject):
     if subject in ('definitions','sources','examples'):
-        templateAddress = 'foodapp/about_'+subject+'.html'
+        templateAddress = 'aminoApp/about_'+subject+'.html'
         return render(request, templateAddress)
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
 class recipeCreateView(CreateView):
-    template_name = 'foodapp/recipe_add.html'
+    template_name = 'aminoApp/recipe_add.html'
     model = Recipe
     form_class = RecipeForm
     success_url = 'success/'
@@ -459,7 +438,7 @@ class recipeCreateView(CreateView):
         ingredient_form.instance = self.object
         ingredient_form.save()
         # return HttpResponseRedirect(self.get_success_url())
-        return redirect("/foodapp/showRecipe/"+str(self.object.pk))
+        return redirect("/aminoApp/showRecipe/"+str(self.object.pk))
 
     def form_invalid(self, form, ingredient_form):
         """
@@ -472,7 +451,7 @@ class recipeCreateView(CreateView):
 
 def showRecipe(request,recipeid):
     recipe = Recipe.objects.get(pk=recipeid)
-    ingredients = IngredientNew.objects.filter(recipe = recipeid)
+    ingredients = Ingredient.objects.filter(recipe = recipeid)
     # menuNutrValue=menu.get_nutritional_value()
     # menuEff=getAminoEfficiencyFromNutrimentValue(menuNutrValue)
     # response = HttpResponse("Recipe "+recipe.title+": ")
@@ -485,7 +464,7 @@ def showRecipe(request,recipeid):
     # response.write('Efficiency'+str(recipeEff))
     # return response
     context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe}
-    return render(request, 'foodapp/presentRecipe.html', context)
+    return render(request, 'aminoApp/presentRecipe.html', context)
 
 def showFood(request,food_dbid):
     food = Food.objects.get(food_dbid=food_dbid)
@@ -519,7 +498,7 @@ def showFood(request,food_dbid):
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
         'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro}
 
-    return render(request, 'foodapp/presentFood.html', context)
+    return render(request, 'aminoApp/presentFood.html', context)
 
 
 def presentAminoAcid(request,internal_name):
@@ -533,9 +512,9 @@ def presentAminoAcid(request,internal_name):
     highContentFoodsAndQuantities = [{'food':food,'quantity':getattr(food.nutritional_value,internal_name)} for food in highContentFoods]
     # highContentFoods = [() for ]
     context = {'aminoAcid': aminoDefinition,'highScores':highScores,'lowScores':lowScores,'highContentFoodsAndQuantities':highContentFoodsAndQuantities}
-    return render(request, 'foodapp/presentAminoAcid.html', context)
+    return render(request, 'aminoApp/presentAminoAcid.html', context)
 
 def showAminoAcidList(request):
     aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')[:25]
     context = {'aminoAcids': aminoAcids}
-    return render(request, 'foodapp/aminoAcidList.html', context)
+    return render(request, 'aminoApp/aminoAcidList.html', context)

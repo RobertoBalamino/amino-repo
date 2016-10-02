@@ -1,0 +1,46 @@
+{% extends "aminoApp/baseRecipe.html" %}
+
+{% block title %}Tetramino - add new recipe{% endblock %}
+
+{% block content %}
+<!--Example from http://kevindias.com/writing/django-class-based-views-multiple-inline-formsets/ -->
+    <div>
+
+        <h1>Add a new recipe</h1>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Ingredients</legend>
+                {{ ingredient_form.management_form }}
+                {{ ingredient_form.non_form_errors }}
+                {% for form in ingredient_form %}
+                    {{ form.id }}
+                    <div class="inline {{ ingredient_form.prefix }}">
+                        <!--{{ form.description.errors }}-->
+                        <!--{{ form.description.label_tag }}-->
+                        <!--{{ form.description }}-->
+                        {{ form.food.errors }}
+                        {{ form.food }}
+                        {{ form.quantity.errors }}
+                        {{ form.quantity }}
+                    </div>
+                {% endfor %}
+            </fieldset>
+
+            <input type="submit" value="Add recipe" class="submit" />
+        </form>
+
+        <p>Or add a recipe with another number of ingredients</p>
+        <form action="/aminoApp/composeRecipe/" method="get">
+            {% csrf_token %}
+            {{ number_form.as_ul }}
+            <input type="submit" value="Change number of ingredients" />
+        </form>
+    </div>
+<!--</body>-->
+
+{% endblock %}
+<!--</html>-->

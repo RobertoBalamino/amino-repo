@@ -1,0 +1,21 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+{% block title %}Tetramino - foods in the database{% endblock %}
+
+{% block content %}
+
+
+<h1>Available foods</h1>
+    {% if foodList %}
+        <ul>
+        {% for food in foodList %}
+            <!--<li><a href="/foodapp/plotFoodAmino/{{ food.food_dbid }}/">{{ food.food_name }}</a></li>-->
+            <li><a href="/showFood/{{food.food_dbid}}/">{{ food.getNameWithoutSaltInfo }}</a></li>
+
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No foods are available.</p>
+    {% endif %}
+
+{% endblock %}

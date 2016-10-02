@@ -1,0 +1,59 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+{% block title %}Tetramino - plot of food amino acids{% endblock %}
+
+{% block content %}
+
+<h1>
+   Food profile
+</h1>
+<h2>{{ food.getNameWithoutSaltInfo }}</h2>
+{{ food.food_name }}
+
+    <p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
+
+
+<h2>Amino acid quantities</h2>
+<embed src={{ chartAbsolute}} height="500">
+<p>In relative terms, this food in particularly poor in <a href="/aminoAcid_{{minAminoAcid.internal_name}}">{{ minAminoAcid }}</a> and rich in <a href="/aminoAcid_{{maxAminoAcid.internal_name}}">{{ maxAminoAcid }}</a>.</p>
+
+<p><a href="/plotFoodAmino/{{food.food_dbid}}/">More graphs of amino acids</a></p>
+
+<h2>General nutritional values</h2>
+Macronutrient quantities (g) per 100 g
+<embed src={{ pieChartMacro}} height="300">
+<p>Energy: {{ food.nutritional_value.energ| floatformat:0}} kcal for 100 g.</p>
+<p><a href="/listFoodNutValues/{{food.food_dbid}}/">Table of nutritional values</a></p>
+
+<h2>Food pairs including this food</h2>
+{% if pairList %}
+        <table style="width:100%">
+            <tr>
+                <th>Pair</th>
+                <th>Best efficiency</th>
+            </tr>
+        {% for pair in pairList %}
+            <tr>
+                <td><a href="/inspectLoadedFoodPair/{{ pair.pk }}/">{{ pair.pair_name }}</a> </td>
+                <td>{{ pair.bestEfficiency |floatformat:2}}</td>
+            </tr>
+            <!--<li><a href="/foodapp/{{ food.id }}/">{{ food.food_name }}</a></li>-->
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No pair is available.</p>
+    {% endif %}
+
+<br/>
+Inspect a new pair with this food:
+<form action="/pairSearchReturn/" method="get">
+    {% csrf_token %}
+    {{ formForPair.as_ul }}
+    <input type="submit" value="Look at pair" />
+</form>
+
+{% endblock %}
+
+
+
+

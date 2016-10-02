@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^pairSearchReturn/', views.pairSearchReturnCreation),
     url(r'^isFoodInDatabase/(?P<food_dbid>[0-9]+)/$', views.isFoodInDatabase, name='isItThere'),
     url(r'^loadFoodInDatabase/(?P<food_dbid>[0-9]+)/$', views.loadFoodInDatabase, name='loadIt'),
-    url(r'^loadFoodNutInfoInDatabase/(?P<food_dbid>[0-9]+)/$', views.loadFoodNutrimentInfo, name='loadNut'),
+    # url(r'^loadFoodNutInfoInDatabase/(?P<food_dbid>[0-9]+)/$', views.loadFoodNutrimentInfo, name='loadNut'),
     url(r'^listFoodNutValues/(?P<food_dbid>[0-9]+)/$', views.listFoodValues, name='listFoodNutValues'),
     url(r'^getFoodEfficiency/(?P<food_dbid>[0-9]+)/$', views.getFoodEfficiency, name='foodEff'),
     url(r'^plotFoodAmino/(?P<food_dbid>[0-9]+)/$', views.plotFoodAmino, name='foodAminoPlot'),

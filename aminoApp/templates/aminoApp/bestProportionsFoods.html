@@ -1,0 +1,30 @@
+<!--#return HttpResponse("Inspecting food pair: "+foodOne.food_name+" and "+foodTwo.food_name)-->
+
+{% extends "foodapp/baseAssociations.html" %}
+
+{% block title %}Amino acid sums for pair of foods{% endblock %}
+
+{% block content %}
+
+<p>Looking at associations of the following foods:
+<ul>
+    {% for food in foods %}
+    <li>{{ food.food_name }} </li>
+    {% endfor %}
+</ul>
+
+<!--</p>-->
+
+<!--<embed src={{ chart  }}>-->
+
+<!--<p> Considering the vectors of amino acid values of the pair, their absolute angle is equal to {{ angle.absolute |floatformat:3}}-->
+<!--the angle between their incomplete components (perpendicular to the complete protein space) is equal to {{ angle.incomplete |floatformat:3}}</p>-->
+
+<p>  Best efficiency is {{ efficiency|floatformat:3 }}, reached with following proportions
+<!--{{bestPropOne|floatformat:3}} of food one.</p>-->
+<ul>
+    {% for prop in bestProps %}
+    <li>{{ prop|floatformat:3 }} </li>
+    {% endfor %}
+</ul>
+{% endblock %}

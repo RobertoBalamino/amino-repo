@@ -1,0 +1,17 @@
+{% extends "aminoApp/baseAssociations.html" %}
+
+
+{% block content %}
+
+<h1>Choose two foods</h1>
+
+and see how good the match is:
+<br/>
+<br/>
+<form action="/aminoApp/pairSearchReturn/" method="get">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

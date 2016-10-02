@@ -119,7 +119,7 @@ class NutritionalValue(models.Model):
     def __str__(self):
         #valueStr=str(getAminoVector(self))
         return self.description #+ valueStr #+ str(getAminoVector(self))
-    
+
 class Food(models.Model):
     # food: name, category, nutriment info...
     food_name = models.CharField(max_length=200)
@@ -142,9 +142,21 @@ class Food(models.Model):
         else:
             shortName = fullName
         return shortName
+    def getNameWithoutSaltInfo(self):
+        # deletes unwanted information at the end of food name
+        unneededInfo = [' without salt',' solids and liquids']
+        fullName = self.food_name
+        nameSplit = fullName.split(',')
+        if nameSplit[-1] in unneededInfo:
+            nameSplitNoSalt = nameSplit[0:-1]
+        else:
+            nameSplitNoSalt = nameSplit
+        nameNoSalt = ",".join(nameSplitNoSalt)
+        # nameSplit[0]+','+nameSplit[1]
+        return nameNoSalt
     class Meta:
         ordering = ['food_name']
-        
+
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
@@ -158,7 +170,7 @@ class Recipe(models.Model):
         ingreds = Ingredient.objects.filter(recipe = self.pk)
         ingrValues=[ingr.get_nutritional_value() for ingr in ingreds]
         return sum(ingrValues[1:],ingrValues[0])
-    
+
 DEFAULT_FOOD_ID = 1
 class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
@@ -169,7 +181,7 @@ class Ingredient(models.Model):
         return (str(self.quantity*100)+' g of '+self.food.food_name)
     def get_nutritional_value(self):
         return (self.quantity*self.food.nutritional_value)
-    
+
 class FoodPair(models.Model):
     foodOneId = models.IntegerField()
     foodTwoId = models.IntegerField() #models.ForeignKey(Food)

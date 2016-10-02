@@ -1,0 +1,19 @@
+{% extends "aminoApp/baseAminoAcids.html" %}
+
+{% block title %}Tetramino - list of amino acids{% endblock %}
+
+{% block content %}
+
+
+<h1>Amino acids</h1>
+
+        <ul>
+        {% for acid in aminoAcids %}
+            <!--<li><a href="/foodapp/plotFoodAmino/{{ food.food_dbid }}/">{{ food.food_name }}</a></li>-->
+            <li><a href="/aminoAcid_{{acid.internal_name}}/">{{ acid.public_name }}</a></li>
+
+        {% endfor %}
+        </ul>
+
+
+{% endblock %}

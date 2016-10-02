@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Bungee|Bungee Shade|Roboto|Amatic+SC">
     <!--<link rel="stylesheet" href="style.css" />-->
-    <link rel="stylesheet" href="/aminoApp{% static "aminoApp/yellowBungeeStyle.css" %}" />
+    <link rel="stylesheet" href="{% static "aminoApp/yellowBungeeStyle.css" %}" />
     <!--<link href="{{STATIC_URL}}foodapp/style.css" rel="stylesheet" type="text/css">-->
     <title>{% block title %}Tetramino - helping you balance amino acid intakes{% endblock %}</title>
 </head>
@@ -19,12 +19,12 @@
     <div id="headbar">
         {% block headbar %}
         <ul>
-            <li class="nav-home"><a href="/aminoApp/">Home</a></li>
-            <li class="nav-foods"><a href="/aminoApp/listFoods/" class="foods">Foods</a></li>
-            <li class="nav-foodpairs"><a href="/aminoApp/choosePair/">Food pairs</a></li>
-            <li class="nav-recipes"><a href="/aminoApp/recipeTable/">Recipes</a></li>
-            <li class="nav-aminos"><a href="/aminoApp/listAminoAcids/">Amino acids</a></li>
-            <li class="nav-about"><a href="/aminoApp/about/">About</a></li>
+            <li class="nav-home"><a href="/">Home</a></li>
+            <li class="nav-foods"><a href="/listFoods/" class="foods">Foods</a></li>
+            <li class="nav-foodpairs"><a href="/choosePair/">Food pairs</a></li>
+            <li class="nav-recipes"><a href="/recipeTable/">Recipes</a></li>
+            <li class="nav-aminos"><a href="/listAminoAcids/">Amino acids</a></li>
+            <li class="nav-about"><a href="/about/">About</a></li>
             <!-- menus pairs contact blog news -->
         </ul>
         {% endblock %}
@@ -44,8 +44,8 @@
 
 
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
-<script type="text/javascript">try{ clicky.init(100988280); }catch(e){}</script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100988280ns.gif" /></p></noscript>
+<script type="text/javascript">try{ clicky.init(100993596); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100993596ns.gif" /></p></noscript>
 
 </body>
 </html>

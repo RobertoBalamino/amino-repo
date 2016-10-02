@@ -17,6 +17,6 @@ from django.conf.urls import include,url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^aminoApp/', include('aminoApp.urls')),
+    url(r'^', include('aminoApp.urls')), #  url(r'^aminoApp/', include('aminoApp.urls')),
     url(r'^admin/', admin.site.urls),
 ]

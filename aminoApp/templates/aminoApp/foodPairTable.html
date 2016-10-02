@@ -1,0 +1,35 @@
+{% extends "aminoApp/baseAssociations.html" %}
+
+{% block title %}Tetramino - food pairs in the database{% endblock %}
+
+{% block content %}
+<h1>Last investigated food pairs</h1>
+
+    {% if pairList %}
+        <table style="width:100%">
+            <tr>
+                <th>Pair</th>
+                <!--<th>Food one id</th>-->
+                <!--<th>Food two id</th>-->
+                <!--<th>Category</th>-->
+                <th>Best efficiency</th>
+            </tr>
+        {% for pair in pairList %}
+            <tr>
+                <td><a href="/aminoApp/inspectLoadedFoodPair/{{ pair.pk }}/">{{ pair.pair_name }}</a> </td>
+                <!--<td>{{ pair.foodOneId }}</td>-->
+                <!--<td>{{ pair.foodTwoId }}</td>-->
+                <td>{{ pair.bestEfficiency |floatformat:2}}</td>
+                <!--<th>{{ food.food_category }}</th>-->
+                <!--<th>{{ food.getEfficiency }}</th>-->
+            </tr>
+            <!--<li><a href="/foodapp/{{ food.id }}/">{{ food.food_name }}</a></li>-->
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No pair is available.</p>
+    {% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,23 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+{% block title %}Tetramino - plot of food amino acids{% endblock %}
+
+{% block content %}
+
+<div id="itemhead">
+   <p>Food: {{ food.food_name }}.</p>
+</div>
+
+    <p>The following chart shows the quantities of different amino acids in 100 grams of {{ food.food_name }}</p>
+    <p>Beginning with the absolute values.</p>
+    <embed src={{ chart  }} height="500">
+    <p>And also looking at the ratios dividing by a complete protein.
+    Amino acid quantities in the food divided by those in equivalent perfectly-balanced food.</p>
+    <embed src={{ propChart}} height="500">
+    <p>In relative terms, this food in particularly poor in <a href="/aminoAcid_{{minAminoAcid.internal_name}}">{{ minAminoAcid }}</a> and rich in <a href="/aminoAcid_{{maxAminoAcid.internal_name}}">{{ maxAminoAcid }}</a>.</p>
+
+{% endblock %}
+
+
+
+
