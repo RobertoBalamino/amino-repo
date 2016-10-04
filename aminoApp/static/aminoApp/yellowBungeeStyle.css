@@ -22,7 +22,8 @@ p {
 }
 
 body {
-    font-family: "Roboto", serif;
+    font-family: "Raleway", serif;
+    /*font-family: "Roboto", serif;*/
     /*background-color: rgb(200,200,255);*/
 
 }
@@ -63,11 +64,12 @@ table {
 /*}*/
 
 #titlebar p {
-    font-family: 'Bungee Shade', serif;
-    /*font-family: 'Amatic SC', cursive;*/
+    font-family: 'Monoton', cursive;
+    /*font-family: 'Amatic SC', cursive; Bungee Shade */
     font-size: 48px;
+    font-weight: bold
     margin-top: -0.2em;
-    margin-bottom: -0.2em;
+    margin-bottom: -0.1em;
     margin-left: 0em;
     margin-right: 0;
     background-color: rgb(250,250,250);
@@ -146,7 +148,10 @@ a:active {
 
 #headbar li a:hover {
     background-color: rgb(250,200,50);
+    border-bottom: solid rgb(180,180,180);
 }
+
+
 
 #subhead li a:hover {
     background-color: rgb(150,150,150);
@@ -192,10 +197,10 @@ div#itemhead {
 	}
 
 	h1 {
-    margin-bottom: 0;
+    margin-bottom: 1em;
     margin-top: 0;
-    margin-left: 0.5em;
-    font-family: 'Bungee', serif;
+    margin-left: 0em;
+    font-family: 'Raleway', serif;
     font-size: 20px;
     text-align: left;
     /*text-align: center;*/
@@ -204,10 +209,10 @@ div#itemhead {
 	}
 
 	h2 {
-    margin-bottom: 0;
+    margin-bottom: 0.4em;
     margin-top: 0;
-    margin-left: 0.5em;
-    font-family: 'Bungee', serif;
+    margin-left: 0em;
+    font-family: 'Raleway', serif;
     font-size: 16px;
     text-align: left;
     /*text-align: center;*/
