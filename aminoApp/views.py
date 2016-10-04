@@ -76,7 +76,8 @@ def loadFoodNamesKnowingIfLoaded(request):
         idOfLine=idOfLine+1 #float(splLine[1])
         foodId=int(splLine[1])
         foodCat=int(splLine[3])
-        interestingCategories = [100,900,1100,1200,1600,1800,2000]
+        #interestingCategories = [100,900,1100,1200,1600,1800,2000]
+        interestingCategories = [100,200,900,1100,1200,1600,1800,2000]
         if foodCat in interestingCategories:
             foodName=splLine[5]
             response.write("<p>"+foodName+'('+str(foodId)+"). ")
