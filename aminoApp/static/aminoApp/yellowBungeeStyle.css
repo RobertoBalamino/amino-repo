@@ -1,4 +1,7 @@
 /*reference colors:*/
+img {
+  vertical-align:middle;
+}
 
 ul {
     /*list-style-type: none;*/
@@ -63,7 +66,11 @@ table {
 /*    float: left;*/
 /*}*/
 
-#titlebar p {
+#titlebar table {
+	border: 0px;
+}
+
+#titlebar td {
     font-family: 'Monoton', cursive;
     /*font-family: 'Amatic SC', cursive; Bungee Shade */
     font-size: 48px;
