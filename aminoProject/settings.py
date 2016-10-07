@@ -117,5 +117,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+# before:
+# STATIC_URL = '/static/'
 
+# now with dj-static:
+STATIC_ROOT = "/home/tetramino/aminoProject/assets"
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'assets'),
+# )

@@ -8,10 +8,10 @@
 and see how good the match is:
 <br/>
 <br/>
-<form action="/aminoApp/pairSearchReturn/" method="get">
+<form action="/pairSearchReturn/" method="get">
     {% csrf_token %}
     {{ form.as_ul }}
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit pair" />
 </form>
 
 {% endblock %}
