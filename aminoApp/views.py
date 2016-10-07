@@ -12,13 +12,13 @@ from django.db.models import Q #or in queryset
 import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
-from .models import Recipe, Ingredient, FoodPair, Nutriment #, NutrientDefinition
+from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern #, NutrientDefinition
 
 #from utilities.loadFromUsda import loadFoodNutrimentInfo
 from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
 from aminoApp.utilityFunctions import getAminoAcidNames, saveRelativeAminoScores
 from aminoApp.utilityFunctions import analyseFoodPair, getBestProportionsForFoods, getCustomPygalStyle
-from aminoApp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie
+from aminoApp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie, getTargetAminoPlot
 from .forms import FoodPairForm, MenuForm
 
 from .forms import IngredientFormSet, RecipeForm, NumberForm
@@ -335,6 +335,8 @@ def plotFoodAmino(request,food_dbid):
 
     return render(request, 'aminoApp/aminoPlot.html', context)
 
+
+
 def plotRecipeAmino(request,recipeid):
     recipe=Recipe.objects.get(pk=recipeid)
     # here we should check if menu has at least one ingredient
@@ -367,6 +369,12 @@ def plotRecipeAmino(request,recipeid):
     chart_props=bar_chart_props.render_data_uri()
     context = {'recipe': recipe,'chart':chart,'chart_props':chart_props}
     return render(request, 'aminoApp/menuAminoPlot.html', context)
+
+def presentTargetPattern(request,patternId):
+    pattern = TargetAminoPattern.objects.get(pk=patternId)
+    chart = getTargetAminoPlot(pattern.nutritional_value)
+    context = {'pattern': pattern,'chart':chart}
+    return render(request, 'aminoApp/presentTargetPattern.html', context)
 
 def about(request):
     return render(request, 'aminoApp/about.html')

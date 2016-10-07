@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^bestProportionsOfRecipeFoods/(?P<recipeid>[0-9]+)/$', views.bestProportionsOfRecipeFoods, name='assocBestProps'),
     url(r'^aminoAcid_(?P<internal_name>[\w]+)/', views.presentAminoAcid, name='presentAminoAcid'),
     url(r'^listAminoAcids/', views.showAminoAcidList, name='listAminoAcid'),
+    url(r'^targetPattern/(?P<patternId>[0-9]+)/$', views.presentTargetPattern, name='presentTargetPattern'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

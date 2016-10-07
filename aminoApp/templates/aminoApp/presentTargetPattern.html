@@ -1,0 +1,16 @@
+{% extends "aminoApp/baseAminoAcids.html" %}
+
+{% block title %}Tetramino - list of amino acids{% endblock %}
+
+{% block content %}
+
+
+<h1>{{ pattern.name }}</h1>
+
+{{ pattern.description }}
+
+<embed src={{ chart}} height="500">
+
+
+
+{% endblock %}

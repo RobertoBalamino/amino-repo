@@ -212,6 +212,13 @@ class RelativeAminoScore(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, default=DEFAULT_FOOD_ID)
     aminoAcid = models.ForeignKey(Nutriment, on_delete=models.CASCADE)
     score = models.FloatField()
-    # scoringPattern
+    # scoringPattern: TargetAminoPattern
     def __str__(self):
         return 'score of '+self.aminoAcid.internal_name+'in '+self.food.food_name+str(self.score)
+
+class TargetAminoPattern(models.Model):
+    nutritional_value = models.ForeignKey('NutritionalValue', on_delete=models.CASCADE,null=True)
+    name = models.CharField(max_length=20)
+    description = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return self.name

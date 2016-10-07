@@ -284,6 +284,18 @@ def getFoodAminoPlotProportions(food):
     chartProp=bar_chart_prop.render_data_uri()
     return chartProp
 
+def getTargetAminoPlot(nutValue):
+    foodAminoVector=nutValue.getAminoVector()
+    custom_style = getCustomPygalStyle()
+    bar_chart = pygal.Bar(title=u'Amino acid quantities (g)',style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
+    bar_chart.add('Amino acids in the food', foodAminoVector)  # Add some values
+    # amino_acid_names = ('trp_g','thr_g','ile_g','leu_g','lys_g','met_g','cys_g','phe_g','tyr_g','val_g','his_g')
+    amino_acid_names = getAminoAcidNames()
+    bar_chart.x_labels = amino_acid_names
+
+    chartAbsolute=bar_chart.render_data_uri()
+    return chartAbsolute
+
 def getMacroNutrientPie(foodValue):
     custom_style = getCustomPygalStyle(defaultFontSize=30)
     pie_chart = pygal.Pie(style=custom_style,legend_at_bottom=True)
