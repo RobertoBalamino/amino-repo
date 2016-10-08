@@ -1,0 +1,18 @@
+{% extends "aminoApp/baseRecipe.html" %}
+
+{% block title %}Tetramino - plot of menu amino acids {% endblock %}
+
+{% block content %}
+
+<h1>Plots for recipe: {{recipe.title}}.</h1>
+
+
+    <!--<p>This chart shows the quantities of different amino acids in the following recipe: {{ recipe.title }}</p>-->
+    <h2>Absolute values:</h2>
+    <embed src={{ chart  }}>
+    <h2>Ratios of target pattern:</h2>
+    <embed src={{ chart_props  }}>
+
+<a href="/showRecipe/{{recipe.pk}}">Back to recipe</a>
+
+{% endblock %}

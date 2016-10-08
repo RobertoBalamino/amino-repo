@@ -4,10 +4,7 @@
 
 {% block content %}
 
-<div id="itemhead">
-   <p>Recipe: {{recipe.title}}.</p>
-</div>
-
+<h1>Recipe: {{recipe.title}}.</h1>
 
 <h2>Ingredients</h2>
     <ul>
@@ -22,9 +19,9 @@
     {% endif %}
 <h2>Amino acids</h2>
 <p>Efficiency: {{efficiency|floatformat:2}}.</p>
-<p><a href="/aminoApp/plotRecipeAmino/{{recipe.pk}}">Plot essential amino acid quantities</a></p>
+<p><a href="/plotRecipeAmino/{{recipe.pk}}">Plot essential amino acid quantities</a></p>
 
-<p>Have a look <a href="/aminoApp/bestProportionsOfRecipeFoods/{{recipe.pk}}">here</a> to see
+<p>Have a look <a href="/bestProportionsOfRecipeFoods/{{recipe.pk}}">here</a> to see
 how efficient can combinations of the same ingredients in different proportions be.</p>
 
 

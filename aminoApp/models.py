@@ -144,16 +144,19 @@ class Food(models.Model):
         return shortName
     def getNameWithoutSaltInfo(self):
         # deletes unwanted information at the end of food name
-        unneededInfo = [' without salt',' solids and liquids']
-        fullName = self.food_name
-        nameSplit = fullName.split(',')
-        if nameSplit[-1] in unneededInfo:
-            nameSplitNoSalt = nameSplit[0:-1]
-        else:
-            nameSplitNoSalt = nameSplit
-        nameNoSalt = ",".join(nameSplitNoSalt)
-        # nameSplit[0]+','+nameSplit[1]
-        return nameNoSalt
+        unneededInfo = [', without salt',', solids and liquids',', drained']
+        foodName = self.food_name
+        # nameSplit = fullName.split(',')
+        # if nameSplit[-1] in unneededInfo:
+        #     nameSplitNoSalt = nameSplit[0:-1]
+        # else:
+        #     nameSplitNoSalt = nameSplit
+        # nameNoSalt = ",".join(nameSplitNoSalt)
+        # # nameSplit[0]+','+nameSplit[1]
+        # return nameNoSalt
+        for unneededStr in unneededInfo:
+            foodName = foodName.replace(unneededStr,'')
+        return foodName
     class Meta:
         ordering = ['food_name']
 
@@ -178,9 +181,9 @@ class Ingredient(models.Model):
     quantity = models.FloatField()
     def __str__(self):
         # return (str(self.quantity*100))
-        return (str(self.quantity*100)+' g of '+self.food.food_name)
+        return ("{:4.0f}".format(self.quantity)+' g of '+self.food.food_name)
     def get_nutritional_value(self):
-        return (self.quantity*self.food.nutritional_value)
+        return (self.quantity*0.01*self.food.nutritional_value)
 
 class FoodPair(models.Model):
     foodOneId = models.IntegerField()

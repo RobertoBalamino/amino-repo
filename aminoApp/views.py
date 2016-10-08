@@ -36,6 +36,10 @@ class IndexView(generic.ListView):
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(IndexView, self).get_context_data(*args, **kwargs)
+        context['lastest_recipe_list'] = Recipe.objects.order_by('-date_added')[:5]
+        return context
 
 class DetailView(generic.DetailView):
     model = Food
@@ -368,7 +372,7 @@ def plotRecipeAmino(request,recipeid):
     chart=bar_chart.render_data_uri()
     chart_props=bar_chart_props.render_data_uri()
     context = {'recipe': recipe,'chart':chart,'chart_props':chart_props}
-    return render(request, 'aminoApp/menuAminoPlot.html', context)
+    return render(request, 'aminoApp/recipeAminoPlot.html', context)
 
 def presentTargetPattern(request,patternId):
     pattern = TargetAminoPattern.objects.get(pk=patternId)
@@ -447,7 +451,7 @@ class recipeCreateView(CreateView):
         ingredient_form.instance = self.object
         ingredient_form.save()
         # return HttpResponseRedirect(self.get_success_url())
-        return redirect("/aminoApp/showRecipe/"+str(self.object.pk))
+        return redirect("/showRecipe/"+str(self.object.pk))
 
     def form_invalid(self, form, ingredient_form):
         """

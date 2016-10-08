@@ -14,6 +14,7 @@
             </div>
             <fieldset>
                 <legend>Ingredients</legend>
+                Select ingredients and enter quantity in grams.
                 {{ ingredient_form.management_form }}
                 {{ ingredient_form.non_form_errors }}
                 {% for form in ingredient_form %}
@@ -34,7 +35,7 @@
         </form>
 
         <p>Or add a recipe with another number of ingredients</p>
-        <form action="/aminoApp/composeRecipe/" method="get">
+        <form action="/composeRecipe/" method="get">
             {% csrf_token %}
             {{ number_form.as_ul }}
             <input type="submit" value="Change number of ingredients" />
