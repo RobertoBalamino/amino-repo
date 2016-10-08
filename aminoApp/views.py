@@ -380,7 +380,7 @@ def about(request):
     return render(request, 'aminoApp/about.html')
 
 def aboutSomething(request,subject):
-    if subject in ('definitions','sources','examples','contact'):
+    if subject in ('definitions','sources','examples','contact','limitations','disclaimer'):
         templateAddress = 'aminoApp/about_'+subject+'.html'
         return render(request, templateAddress)
     else:
