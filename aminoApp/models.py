@@ -142,6 +142,10 @@ class Food(models.Model):
         else:
             shortName = fullName
         return shortName
+    def getKeywordName(self):
+        shortName = self.getNameBegin()
+        keyName = shortName.replace(',','')
+        return keyName
     def getNameWithoutSaltInfo(self):
         # deletes unwanted information at the end of food name
         unneededInfo = [', without salt',', solids and liquids',', drained']

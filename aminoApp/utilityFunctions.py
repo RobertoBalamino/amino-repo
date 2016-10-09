@@ -1,7 +1,7 @@
 import numpy as np
 from pulp import *
 
-from .models import NutritionalValue, Nutriment, RelativeAminoScore
+from .models import NutritionalValue, Nutriment, Ingredient, RelativeAminoScore
 
 import pygal
 from pygal.style import Style
@@ -284,6 +284,29 @@ def getFoodAminoPlotProportions(food):
     chartProp=bar_chart_prop.render_data_uri()
     return chartProp
 
+def getRecipeAminoPlotProportions(recipe):
+    custom_style = getCustomPygalStyle()
+
+    menuNutrValue=recipe.get_nutritional_value()
+    menuAminoVector = menuNutrValue.getAminoVector()
+    projectVectorOnComplete = getAminoProportionsOfComplete(menuAminoVector)
+    equivCompleteVector = projectVectorOnComplete['projected']
+    ingreds = Ingredient.objects.filter(recipe = recipe)
+
+    bar_chart_props = pygal.StackedBar(title=u'Amino acid proportions',style=custom_style,legend_at_bottom=True)
+    amino_acid_names = getAminoAcidNames()
+    bar_chart_props.x_labels = amino_acid_names
+
+    for ingr in ingreds:
+        ingrNutrVal=ingr.get_nutritional_value()
+        ingrAminoVector=ingrNutrVal.getAminoVector()
+        ingrAminoProps = np.divide(ingrAminoVector, equivCompleteVector)
+        bar_chart_props.add(str(ingr), ingrAminoProps)
+
+    chart_props = bar_chart_props.render_data_uri()
+
+    return chart_props
+
 def getTargetAminoPlot(nutValue):
     foodAminoVector=nutValue.getAminoVector()
     custom_style = getCustomPygalStyle()
@@ -307,3 +330,19 @@ def getMacroNutrientPie(foodValue):
     pie_chart.add('protein', foodValue.prot)
     renderedChart = pie_chart.render_data_uri()
     return renderedChart
+
+def getRequirementsPerGramProtein(nutVal):
+    # WHO protein and aa requirements p.245
+    amino_acids = ['histidine','isoleucine','leucine','lysine','methionine','methionine + cysteine','phenylalanine + tyrosine','threonine','tryptophan','valine']
+    amino_acids_short = ['his','ile','leu','lys','met','met + cys','phe + tyr','thr','trp','val']
+    required = [15,30,59,45,16,22,30,23,6,39]
+    absoluteValues = [nutVal.his_g,nutVal.ile_g,nutVal.leu_g,nutVal.lys_g,nutVal.met_g,nutVal.met_g+nutVal.cys_g,nutVal.phe_g+nutVal.tyr_g,nutVal.thr_g,nutVal.trp_g,nutVal.val_g]
+    values = [1000*aval/nutVal.prot for aval in absoluteValues]
+    # plot
+    custom_style = getCustomPygalStyle(defaultFontSize=30)
+    bar_chart = pygal.Bar(title=u'Amino acid/protein (mg/g)',style=custom_style,legend_at_bottom=True,x_label_rotation=40,)                                            # Then create a bar graph object
+    bar_chart.add('Actual', values)
+    bar_chart.add('Required', required)
+    bar_chart.x_labels = amino_acids_short
+    rendered_chart=bar_chart.render_data_uri()
+    return rendered_chart

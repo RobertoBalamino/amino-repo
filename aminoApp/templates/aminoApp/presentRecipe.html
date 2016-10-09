@@ -19,7 +19,10 @@
     {% endif %}
 <h2>Amino acids</h2>
 <p>Efficiency: {{efficiency|floatformat:2}}.</p>
-<p><a href="/plotRecipeAmino/{{recipe.pk}}">Plot essential amino acid quantities</a></p>
+
+<embed src={{ chartProps }} height="400">
+
+<p><a href="/plotRecipeAmino/{{recipe.pk}}">More plots for this recipe</a></p>
 
 <p>Have a look <a href="/bestProportionsOfRecipeFoods/{{recipe.pk}}">here</a> to see
 how efficient can combinations of the same ingredients in different proportions be.</p>

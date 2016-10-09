@@ -18,8 +18,9 @@ from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern 
 from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
 from aminoApp.utilityFunctions import getAminoAcidNames, saveRelativeAminoScores
 from aminoApp.utilityFunctions import analyseFoodPair, getBestProportionsForFoods, getCustomPygalStyle
-from aminoApp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie, getTargetAminoPlot
-from .forms import FoodPairForm, MenuForm
+from aminoApp.utilityFunctions import  getFoodAminoPlotAbsolute, getFoodAminoPlotProportions, getMacroNutrientPie, getTargetAminoPlot, getRecipeAminoPlotProportions
+from aminoApp.utilityFunctions import getRequirementsPerGramProtein
+from .forms import FoodPairForm
 
 from .forms import IngredientFormSet, RecipeForm, NumberForm
 
@@ -474,9 +475,11 @@ def showRecipe(request,recipeid):
     recipeEff=getAminoEfficiencyFromNutrimentValue(recipeNutrValue)
     recipe.efficiency=recipeEff
     recipe.save()
+
+    chartProps = getRecipeAminoPlotProportions(recipe)
     # response.write('Efficiency'+str(recipeEff))
     # return response
-    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe}
+    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps}
     return render(request, 'aminoApp/presentRecipe.html', context)
 
 def showFood(request,food_dbid):
@@ -500,6 +503,9 @@ def showFood(request,food_dbid):
 
     # amino acid scores (save)
     saveRelativeAminoScores(food)
+    # per grams of protein
+    chartPerProtein = getRequirementsPerGramProtein(foodValue)
+
     # pie chart
     pieChartMacro = getMacroNutrientPie(foodValue)
     # pairs
@@ -509,7 +515,7 @@ def showFood(request,food_dbid):
     # form to look for pairs
     formForPair = FoodPairForm(initial={'foodOne': food.pk}) #FoodForm(initial={'foodOne': 61})
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
-        'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro}
+        'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,'chartPerProtein':chartPerProtein}
 
     return render(request, 'aminoApp/presentFood.html', context)
 

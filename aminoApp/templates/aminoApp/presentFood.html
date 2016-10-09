@@ -2,6 +2,10 @@
 
 {% block title %}Tetramino - plot of food amino acids{% endblock %}
 
+{% block description %}"Look for complementary pairs of protein sources in terms of amino acid contents"{% endblock %}
+
+{% block keywords %}"{{ food.getKeywordName }} amino acids, {{ food.getKeywordName }} proteins"{% endblock %}
+
 {% block content %}
 
 <h1>
@@ -9,7 +13,6 @@
 </h1>
 <h2>{{ food.getNameWithoutSaltInfo }}</h2>
 {{ food.food_name }}
-
     <p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
 
 
@@ -24,6 +27,7 @@ Macronutrient quantities (g) per 100 g
 <embed src={{ pieChartMacro}} height="300">
 <p>Energy: {{ food.nutritional_value.energ| floatformat:0}} kcal for 100 g.</p>
 <p><a href="/listFoodNutValues/{{food.food_dbid}}/">Table of nutritional values</a></p>
+<embed src={{ chartPerProtein}} height="400">
 
 <h2>Food pairs including this food</h2>
 {% if pairList %}
