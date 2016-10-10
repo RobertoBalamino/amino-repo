@@ -264,6 +264,8 @@ def inspectLoadedFoodPair(request,pair_id):
     context = analyseFoodPair(foodOne,foodTwo)
     pair.bestEfficiency = context['bestEfficiency']
     pair.bestProportion = context['bestPropOne']
+    pair.angleAbsolute = context['angle']['absolute']
+    pair.angleIncomplete = context['angle']['incomplete']
     pair.save()
     return render(request, 'aminoApp/inspectFoodPair.html', context)
     # d) save menu based on food pair
@@ -504,8 +506,12 @@ def showFood(request,food_dbid):
     # amino acid scores (save)
     saveRelativeAminoScores(food)
     # per grams of protein
-    chartPerProtein = getRequirementsPerGramProtein(foodValue)
+    # chartPerProtein = getRequirementsPerGramProtein(foodValue)
+    perGramProtInfo = getRequirementsPerGramProtein(foodValue)
+    # perGramProtInfo = {'chart':rendered_chart,'values':values,'required':required,'propOfRequirement':propOfRequirement}
+    chartPerProtein = perGramProtInfo['chart']
 
+    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
     # pie chart
     pieChartMacro = getMacroNutrientPie(foodValue)
     # pairs
@@ -515,7 +521,8 @@ def showFood(request,food_dbid):
     # form to look for pairs
     formForPair = FoodPairForm(initial={'foodOne': food.pk}) #FoodForm(initial={'foodOne': 61})
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
-        'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,'chartPerProtein':chartPerProtein}
+        'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,
+        'chartPerProtein':chartPerProtein,'zippedInfoPerGramProt':zippedInfoPerGramProt}
 
     return render(request, 'aminoApp/presentFood.html', context)
 

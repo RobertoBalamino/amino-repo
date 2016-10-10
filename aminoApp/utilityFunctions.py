@@ -225,12 +225,13 @@ def getCustomPygalStyle(defaultFontSize=16):
     custom_style = Style(
         background='transparent',
         plot_background='rgb(255,255,255)',
-        font_family='googlefont:Roboto',
+        font_family='googlefont:Raleway',
         title_font_size=defaultFontSize+4,
         major_label_font_size=defaultFontSize,
         label_font_size=defaultFontSize-2,
         legend_font_size=defaultFontSize,
         value_font_size=defaultFontSize,
+        tooltip_font_size=defaultFontSize,
         value_label_font_size=defaultFontSize)
     return custom_style
 
@@ -262,7 +263,8 @@ def saveRelativeAminoScores(food):
 def getFoodAminoPlotAbsolute(food):
     foodAminoVector=food.nutritional_value.getAminoVector()
     custom_style = getCustomPygalStyle()
-    bar_chart = pygal.Bar(title=u'Amino acid quantities (g)',style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
+    # title=u'Amino acid quantities (g)',
+    bar_chart = pygal.Bar(style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
     bar_chart.add('Amino acids in the food', foodAminoVector)  # Add some values
     # amino_acid_names = ('trp_g','thr_g','ile_g','leu_g','lys_g','met_g','cys_g','phe_g','tyr_g','val_g','his_g')
     amino_acid_names = getAminoAcidNames()
@@ -277,7 +279,8 @@ def getFoodAminoPlotProportions(food):
     foodAminoVector=food.nutritional_value.getAminoVector()
     foodAminoProportions = getAminoProportionsOfComplete(foodAminoVector)
     custom_style = getCustomPygalStyle()
-    bar_chart_prop = pygal.Bar(title=u'Amino acid ratios',style=custom_style,legend_at_bottom=True)
+    # title=u'Amino acid ratios',
+    bar_chart_prop = pygal.Bar(style=custom_style,legend_at_bottom=True)
     bar_chart_prop.add('Amino acids', foodAminoProportions['propsOfProj'])
     amino_acid_names = getAminoAcidNames()
     bar_chart_prop.x_labels = amino_acid_names
@@ -292,8 +295,8 @@ def getRecipeAminoPlotProportions(recipe):
     projectVectorOnComplete = getAminoProportionsOfComplete(menuAminoVector)
     equivCompleteVector = projectVectorOnComplete['projected']
     ingreds = Ingredient.objects.filter(recipe = recipe)
-
-    bar_chart_props = pygal.StackedBar(title=u'Amino acid proportions',style=custom_style,legend_at_bottom=True)
+    # title=u'Amino acid proportions',
+    bar_chart_props = pygal.StackedBar(style=custom_style,legend_at_bottom=True)
     amino_acid_names = getAminoAcidNames()
     bar_chart_props.x_labels = amino_acid_names
 
@@ -310,7 +313,8 @@ def getRecipeAminoPlotProportions(recipe):
 def getTargetAminoPlot(nutValue):
     foodAminoVector=nutValue.getAminoVector()
     custom_style = getCustomPygalStyle()
-    bar_chart = pygal.Bar(title=u'Amino acid quantities (g)',style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
+    # title=u'Amino acid quantities (g)',
+    bar_chart = pygal.Bar(style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
     bar_chart.add('Amino acids in the food', foodAminoVector)  # Add some values
     # amino_acid_names = ('trp_g','thr_g','ile_g','leu_g','lys_g','met_g','cys_g','phe_g','tyr_g','val_g','his_g')
     amino_acid_names = getAminoAcidNames()
@@ -338,11 +342,15 @@ def getRequirementsPerGramProtein(nutVal):
     required = [15,30,59,45,16,22,30,23,6,39]
     absoluteValues = [nutVal.his_g,nutVal.ile_g,nutVal.leu_g,nutVal.lys_g,nutVal.met_g,nutVal.met_g+nutVal.cys_g,nutVal.phe_g+nutVal.tyr_g,nutVal.thr_g,nutVal.trp_g,nutVal.val_g]
     values = [1000*aval/nutVal.prot for aval in absoluteValues]
+    propOfRequirement = np.divide(values,required)
+
     # plot
     custom_style = getCustomPygalStyle(defaultFontSize=30)
-    bar_chart = pygal.Bar(title=u'Amino acid/protein (mg/g)',style=custom_style,legend_at_bottom=True,x_label_rotation=40,)                                            # Then create a bar graph object
+    # title=u'Amino acid/protein (mg/g)',
+    bar_chart = pygal.Bar(style=custom_style,legend_at_bottom=True,x_label_rotation=40,)                                            # Then create a bar graph object
     bar_chart.add('Actual', values)
     bar_chart.add('Required', required)
     bar_chart.x_labels = amino_acids_short
     rendered_chart=bar_chart.render_data_uri()
-    return rendered_chart
+    perGramProtInfo = {'chart':rendered_chart,'amino_acids':amino_acids,'values':values,'required':required,'propOfRequirement':propOfRequirement}
+    return perGramProtInfo

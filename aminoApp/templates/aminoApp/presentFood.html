@@ -9,15 +9,15 @@
 {% block content %}
 
 <h1>
-   Food profile
+   Food profile: {{ food.getNameWithoutSaltInfo }}
 </h1>
-<h2>{{ food.getNameWithoutSaltInfo }}</h2>
-{{ food.food_name }}
-    <p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
+
+<p>Full name: {{ food.food_name }}</p>
+<p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
 
 
-<h2>Amino acid quantities</h2>
-<embed src={{ chartAbsolute}} height="500">
+<h2>Amino acid quantities (g per 100 g)</h2>
+<embed src={{ chartAbsolute}} height="400">
 <p>In relative terms, this food in particularly poor in <a href="/aminoAcid_{{minAminoAcid.internal_name}}">{{ minAminoAcid }}</a> and rich in <a href="/aminoAcid_{{maxAminoAcid.internal_name}}">{{ maxAminoAcid }}</a>.</p>
 
 <p><a href="/plotFoodAmino/{{food.food_dbid}}/">More graphs of amino acids</a></p>
@@ -27,19 +27,51 @@ Macronutrient quantities (g) per 100 g
 <embed src={{ pieChartMacro}} height="300">
 <p>Energy: {{ food.nutritional_value.energ| floatformat:0}} kcal for 100 g.</p>
 <p><a href="/listFoodNutValues/{{food.food_dbid}}/">Table of nutritional values</a></p>
-<embed src={{ chartPerProtein}} height="400">
+
+<!--requirements per g of protein-->
+<h2>Ratio of essential amino acids to total protein (mg/g)</h2>
+<div class="squareTile">
+    <!--<embed src={{ chartPerProtein}} height="400">-->
+    <embed src={{ chartPerProtein}}>
+    <!--perGramProtInfo = {'chart':rendered_chart,'values':values,'required':required,'propOfRequirement':propOfRequirement}-->
+</div>
+<div class="squareTile">
+    <table>
+      <tr>
+        <th>Amino acid</th>
+        <th>In food</th>
+        <th>Required</th>
+      </tr>
+      <tr>
+            <td></td>
+            <td>(g/kg protein)</td>
+            <td>(g/kg protein)</td>
+        </tr>
+    {% for row in zippedInfoPerGramProt %}
+        <tr>
+            <td>{{row.0}}</td>
+            <td>{{row.1| floatformat:1 }}</td>
+            <td>{{row.2| floatformat:0}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+<div style="clear:both;"></div>
 
 <h2>Food pairs including this food</h2>
 {% if pairList %}
-        <table style="width:100%">
+        <!--<table style="width:100%">-->
+        <table>
             <tr>
                 <th>Pair</th>
                 <th>Best efficiency</th>
+                <th>Amino profile similarity</th>
             </tr>
         {% for pair in pairList %}
             <tr>
                 <td><a href="/inspectLoadedFoodPair/{{ pair.pk }}/">{{ pair.pair_name }}</a> </td>
                 <td>{{ pair.bestEfficiency |floatformat:2}}</td>
+                <td>{{ pair.angleIncomplete  |floatformat:2}}</td>
             </tr>
             <!--<li><a href="/foodapp/{{ food.id }}/">{{ food.food_name }}</a></li>-->
         {% endfor %}

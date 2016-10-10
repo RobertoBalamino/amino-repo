@@ -17,46 +17,47 @@
 
 <!--<body>-->
 <body id="{% block section %}section-generic{% endblock %}">
+    <div id="container">
      <!--style="clear:both;"-->
-    <div id="titlebar">
-        <table style="width:100%">
-            <tr>
-                <td width="10%"><img src="/static/aminoApp/platefulOfCubes.svg" height="70" width="100" align="middle"/></td>
-                <!--<td width="10%"><img src="{% static "aminoApp/platefulOfCubes.svg" %}" height="70" width="100" align="middle"/></td>-->
-                <td>Tetramino</td>
-            </tr>
-        </table>
-        <!--Tetramino-->
-    </div>
-    <div id="headbar">
-        {% block headbar %}
-        <ul>
-            <li class="nav-home"><a href="/">Home</a></li>
-            <li class="nav-foods"><a href="/listFoods/" class="foods">Foods</a></li>
-            <li class="nav-foodpairs"><a href="/choosePair/">Food pairs</a></li>
-            <li class="nav-recipes"><a href="/recipeTable/">Recipes</a></li>
-            <li class="nav-aminos"><a href="/listAminoAcids/">Amino acids</a></li>
-            <li class="nav-about"><a href="/about/">About</a></li>
-            <!-- menus pairs contact blog news -->
-        </ul>
-        {% endblock %}
-    </div>
+        <div id="titlebar">
+            <table style="width:100%">
+                <tr>
+                    <td width="10%"><img src="/static/aminoApp/platefulOfCubes.svg" height="70" width="100" align="middle"/></td>
+                    <!--<td width="10%"><img src="{% static "aminoApp/platefulOfCubes.svg" %}" height="70" width="100" align="middle"/></td>-->
+                    <td>Tetramino</td>
+                </tr>
+            </table>
+            <!--Tetramino-->
+        </div>
+        <div id="headbar">
+            {% block headbar %}
+            <ul>
+                <li class="nav-home"><a href="/">Home</a></li>
+                <li class="nav-foods"><a href="/listFoods/" class="foods">Foods</a></li>
+                <li class="nav-foodpairs"><a href="/choosePair/">Food pairs</a></li>
+                <li class="nav-recipes"><a href="/recipeTable/">Recipes</a></li>
+                <li class="nav-aminos"><a href="/listAminoAcids/">Amino acids</a></li>
+                <li class="nav-about"><a href="/about/">About</a></li>
+                <!-- menus pairs contact blog news -->
+            </ul>
+            {% endblock %}
+        </div>
 
-    <div id="subhead">
-        {% block subhead %}{% endblock %}
-    </div>
+        <div id="subhead">
+            {% block subhead %}{% endblock %}
+        </div>
 
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
 
-    <div id="footer">
-        {% block footer %}
-        Copyright &copy; Tetramino 2016.
-        Read <a href="/about_disclaimer/">our disclaimer</a>.
-        {% endblock %}
+        <div id="footer">
+            {% block footer %}
+            Copyright &copy; Tetramino 2016.
+            Read <a href="/about_disclaimer/">our disclaimer</a>.
+            {% endblock %}
+        </div>
     </div>
-
 
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
 <script type="text/javascript">try{ clicky.init(100993596); }catch(e){}</script>
