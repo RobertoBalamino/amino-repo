@@ -167,7 +167,8 @@ class Food(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    category = models.CharField(max_length=15, null=True, blank=True) # or a choice
+    category = models.CharField(max_length=20, null=True, blank=True) # or a choice
+    link = models.CharField(max_length=30, null=True, blank=True)
     date_added = models.DateTimeField('date added', null=True, blank=True,auto_now_add=True)
     efficiency = models.FloatField(null=True)
     def __str__(self):

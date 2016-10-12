@@ -1,4 +1,12 @@
 /*reference colors:*/
+/*blue: color: rgb(120,130,200);*/
+/*red: color: rgb(240,120,110);*/
+/*green: color: rgb(80,180,170);*/
+/*yellow: color: rgb(255,210,80);*/
+/*orange: color: rgb(255,140,100);*/
+/*gray head rgb(220,220,220)*/
+/*gray subhead rgb(240,240,240)*/
+
 img {
   vertical-align:middle;
 }
@@ -82,11 +90,31 @@ table {
     background-color: white;
     /*rgb(250,250,250);*/
     color: rgb(100,100,100);
+    /*color: rgb(255,140,100);*/
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
 }
+
+.titlebarSecondColor {
+    color: rgb(80,180,170);
+}
+
+.redColor {
+    color: rgb(240,120,110);
+}
+
+.greenColor {
+    color: rgb(80,180,170);
+}
+
+.yellowColor {
+    /*color: rgb(255,210,80);*/
+    color: rgb(255,140,100);
+}
+
+
 
 div#container
 {
@@ -96,7 +124,7 @@ div#container
 
 .squareTile
 {
-    width:45%;
+    width:48%;
     float:left;
 }
 
@@ -112,7 +140,7 @@ div#container
 
 #headbar ul li a {
     text-decoration:none;
-    margin: 4px;
+    margin: 5px;
 	padding: 5px 16px 5px 16px;
 	font-weight: bold;
 	color: black;
@@ -127,7 +155,9 @@ div#container
 
 div#headbar {
 	background-color:rgb(220,220,220);
-	border-bottom: solid rgb(250,220,55);
+	/*border-bottom: solid rgb(250,220,55);*/
+	/*border-bottom: solid rgb(120,130,200);*/
+	border-bottom: solid rgb(100,100,100);
 	}
 
 /*div#headbar {*/
@@ -167,7 +197,7 @@ a:active {
 }
 
 #headbar li a:hover {
-    background-color: rgb(250,200,50);
+    background-color: rgb(255,210,80);
     border-bottom: solid rgb(180,180,180);
 }
 
@@ -201,7 +231,8 @@ li a:hover {
 /*current section*/
 #section-home .nav-home a, #section-foods .nav-foods a, #section-about .nav-about a,
     #section-foodpairs .nav-foodpairs a, #section-recipes .nav-recipes a, #section-aminos .nav-aminos a {
-    background-color:rgb(250,220,55);
+    /*background-color:rgb(250,220,55);*/
+    background-color:rgb(240,240,240);
     border-bottom: solid rgb(0,0,0);
             }
 
@@ -225,7 +256,8 @@ li a:hover {
     text-align: left;
     /*text-align: center;*/
     /*color: rgb(100,100,100);*/
-    color: rgb(120,130,200);
+    /*color: rgb(120,130,200);*/
+    color: rgb(80,180,170);
 	border-bottom: solid 1px rgb(240,240,240);
 	}
 
@@ -251,7 +283,8 @@ div#footer {
 	}
 
 div#content {
-	margin: 1em;
+    margin-left:1em;
+	margin-right: 0em;
 	padding: 0.5em;
 	/*border-top: solid rgb(100,200,255);*/
 	float: none

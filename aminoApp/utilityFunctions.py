@@ -344,6 +344,7 @@ def getRequirementsPerGramProtein(nutVal):
     values = [1000*aval/nutVal.prot for aval in absoluteValues]
     propOfRequirement = np.divide(values,required)
 
+
     # ordering
     allZipped = zip(propOfRequirement,amino_acids,amino_acids_short,required,absoluteValues,values)
     allZippedSorted = sorted(allZipped, key = lambda t: t[0])
@@ -354,6 +355,7 @@ def getRequirementsPerGramProtein(nutVal):
     required = unzipped[3]
     absoluteValues = unzipped[4]
     values = unzipped[5]
+    color = [getColorFromProportion(prop) for prop in propOfRequirement]
 
     # plot
     custom_style = getCustomPygalStyle(defaultFontSize=30)
@@ -363,5 +365,14 @@ def getRequirementsPerGramProtein(nutVal):
     bar_chart.add('Required', required)
     bar_chart.x_labels = amino_acids_short
     rendered_chart=bar_chart.render_data_uri()
-    perGramProtInfo = {'chart':rendered_chart,'amino_acids':amino_acids,'values':values,'required':required,'propOfRequirement':propOfRequirement}
+    perGramProtInfo = {'chart':rendered_chart,'amino_acids':amino_acids,'values':values,'required':required,'propOfRequirement':propOfRequirement,'color':color}
     return perGramProtInfo
+
+def getColorFromProportion(prop):
+    if prop>1.1:
+        color = 'greenColor'
+    elif prop>0.8:
+        color = 'yellowColor'
+    else:
+        color = 'redColor'
+    return color

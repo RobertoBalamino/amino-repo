@@ -487,7 +487,7 @@ def showRecipe(request,recipeid):
     perGramProtInfo = getRequirementsPerGramProtein(recipeNutrValue)
 
     chartPerProtein = perGramProtInfo['chart']
-    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
+    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'],perGramProtInfo['color'])
     # zippedInfoPerGramProt = sorted(zippedInfoPerGramProt, key = lambda t: t[1])
     context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps,'zippedInfoPerGramProt':zippedInfoPerGramProt,'chartPerProtein':chartPerProtein,}
     return render(request, 'aminoApp/presentRecipe.html', context)
