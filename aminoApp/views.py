@@ -481,7 +481,15 @@ def showRecipe(request,recipeid):
     chartProps = getRecipeAminoPlotProportions(recipe)
     # response.write('Efficiency'+str(recipeEff))
     # return response
-    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps}
+
+    # per grams of protein
+    # chartPerProtein = getRequirementsPerGramProtein(foodValue)
+    perGramProtInfo = getRequirementsPerGramProtein(recipeNutrValue)
+
+    chartPerProtein = perGramProtInfo['chart']
+    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
+    # zippedInfoPerGramProt = sorted(zippedInfoPerGramProt, key = lambda t: t[1])
+    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps,'zippedInfoPerGramProt':zippedInfoPerGramProt,'chartPerProtein':chartPerProtein,}
     return render(request, 'aminoApp/presentRecipe.html', context)
 
 def showFood(request,food_dbid):
@@ -510,8 +518,8 @@ def showFood(request,food_dbid):
     perGramProtInfo = getRequirementsPerGramProtein(foodValue)
     # perGramProtInfo = {'chart':rendered_chart,'values':values,'required':required,'propOfRequirement':propOfRequirement}
     chartPerProtein = perGramProtInfo['chart']
-
     zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
+
     # pie chart
     pieChartMacro = getMacroNutrientPie(foodValue)
     # pairs

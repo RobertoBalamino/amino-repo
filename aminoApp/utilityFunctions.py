@@ -344,6 +344,17 @@ def getRequirementsPerGramProtein(nutVal):
     values = [1000*aval/nutVal.prot for aval in absoluteValues]
     propOfRequirement = np.divide(values,required)
 
+    # ordering
+    allZipped = zip(propOfRequirement,amino_acids,amino_acids_short,required,absoluteValues,values)
+    allZippedSorted = sorted(allZipped, key = lambda t: t[0])
+    unzipped = list(zip(*allZippedSorted))
+    propOfRequirement = unzipped[0]
+    amino_acids = unzipped[1]
+    amino_acids_short = unzipped[2]
+    required = unzipped[3]
+    absoluteValues = unzipped[4]
+    values = unzipped[5]
+
     # plot
     custom_style = getCustomPygalStyle(defaultFontSize=30)
     # title=u'Amino acid/protein (mg/g)',
