@@ -16,7 +16,7 @@
             </tr>
         {% for pair in pairList %}
             <tr>
-                <td><a href="/aminoApp/inspectLoadedFoodPair/{{ pair.pk }}/">{{ pair.pair_name }}</a> </td>
+                <td><a href="/inspectLoadedFoodPair/{{ pair.pk }}/">{{ pair.pair_name }}</a> </td>
                 <!--<td>{{ pair.foodOneId }}</td>-->
                 <!--<td>{{ pair.foodTwoId }}</td>-->
                 <td>{{ pair.bestEfficiency |floatformat:2}}</td>
