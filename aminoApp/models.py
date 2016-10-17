@@ -132,7 +132,7 @@ class Food(models.Model):
     efficiency = models.FloatField(null=True)
 
     def __str__(self):
-        return self.getNameBegin() #self.food_name
+        return self.getNameBegin() #+str(self.food_dbid) #self.food_name
     def getNameBegin(self):
         # return two first words of food name
         fullName = self.food_name

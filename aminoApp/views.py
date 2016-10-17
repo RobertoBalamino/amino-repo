@@ -83,7 +83,7 @@ def loadFoodNamesKnowingIfLoaded(request):
         foodCat=int(splLine[3])
         #interestingCategories = [100,900,1100,1200,1600,1800,2000]
         interestingCategories = [100,200,900,1100,1200,1600,1800,2000]
-        if foodCat in interestingCategories:
+        if foodCat > 1: #foodCat in interestingCategories:
             foodName=splLine[5]
             response.write("<p>"+foodName+'('+str(foodId)+"). ")
             if foodId in loadedFoodIds:
