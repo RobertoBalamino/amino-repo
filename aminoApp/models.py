@@ -215,6 +215,8 @@ class Nutriment(models.Model):
     category = models.CharField(max_length=30)
     def __str__(self):
         return self.public_name
+    def capitalName(self):
+        return self.public_name.capitalize()
 
 class RelativeAminoScore(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, default=DEFAULT_FOOD_ID)

@@ -1,6 +1,7 @@
 {% extends "aminoApp/baseRecipe.html" %}
 
-{% block title %}Tetramino - recipe - {% endblock %}
+{% block title %}Tetramino - recipe - {{recipe.title}} {% endblock %}
+{% block description %}"Investigation of recipe ({{recipe.title}}) in terms of amino acid balancing"{% endblock %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
 <h2>Ingredients</h2>
     <ul>
     {% for ingr in ingredients %}
-        <li>{{ ingr }}</li>
+        <li><a href="/showFood/{{ingr.food.food_dbid}}">{{ ingr }}</a></li>
     {% endfor %}
     </ul>
 
@@ -45,7 +46,7 @@
         </tr>
     {% for row in zippedInfoPerGramProt %}
         <tr>
-            <td>{{row.0}}</td>
+            <td><a href="/aminoAcid_{{row.4}}_g">{{row.0}}</a></td>
             <td><span class="{{row.3}}">{{row.1| floatformat:1 }}</span></td>
             <td>{{row.2| floatformat:0}}</td>
         </tr>

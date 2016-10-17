@@ -2,7 +2,10 @@
 
 {% block title %}Tetramino - plot of food amino acids{% endblock %}
 
-{% block description %}"Look for complementary pairs of protein sources in terms of amino acid contents"{% endblock %}
+{% block description %}
+"How good is {{ food.getKeywordName }} as a source of proteins and amino acids?
+{{ food.getKeywordName }} in relatively poor in {{ minAminoAcid }} and rich in {{ maxAminoAcid }}.
+Look for complementary protein sources."{% endblock %}
 
 {% block keywords %}"{{ food.getKeywordName }} amino acids, {{ food.getKeywordName }} proteins"{% endblock %}
 

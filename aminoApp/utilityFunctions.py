@@ -339,6 +339,7 @@ def getRequirementsPerGramProtein(nutVal):
     # WHO protein and aa requirements p.245
     amino_acids = ['histidine','isoleucine','leucine','lysine','methionine','methionine + cysteine','phenylalanine + tyrosine','threonine','tryptophan','valine']
     amino_acids_short = ['his','ile','leu','lys','met','met + cys','phe + tyr','thr','trp','val']
+    amino_acid_link = ['his','ile','leu','lys','met','met','phe','thr','trp','val']
     required = [15,30,59,45,16,22,30,23,6,39]
     absoluteValues = [nutVal.his_g,nutVal.ile_g,nutVal.leu_g,nutVal.lys_g,nutVal.met_g,nutVal.met_g+nutVal.cys_g,nutVal.phe_g+nutVal.tyr_g,nutVal.thr_g,nutVal.trp_g,nutVal.val_g]
     values = [1000*aval/nutVal.prot for aval in absoluteValues]
@@ -346,7 +347,7 @@ def getRequirementsPerGramProtein(nutVal):
 
 
     # ordering
-    allZipped = zip(propOfRequirement,amino_acids,amino_acids_short,required,absoluteValues,values)
+    allZipped = zip(propOfRequirement,amino_acids,amino_acids_short,required,absoluteValues,values,amino_acid_link)
     allZippedSorted = sorted(allZipped, key = lambda t: t[0])
     unzipped = list(zip(*allZippedSorted))
     propOfRequirement = unzipped[0]
@@ -355,6 +356,7 @@ def getRequirementsPerGramProtein(nutVal):
     required = unzipped[3]
     absoluteValues = unzipped[4]
     values = unzipped[5]
+    amino_acid_link = unzipped[6]
     color = [getColorFromProportion(prop) for prop in propOfRequirement]
 
     # plot
@@ -365,7 +367,7 @@ def getRequirementsPerGramProtein(nutVal):
     bar_chart.add('Required', required)
     bar_chart.x_labels = amino_acids_short
     rendered_chart=bar_chart.render_data_uri()
-    perGramProtInfo = {'chart':rendered_chart,'amino_acids':amino_acids,'values':values,'required':required,'propOfRequirement':propOfRequirement,'color':color}
+    perGramProtInfo = {'chart':rendered_chart,'amino_acids':amino_acids,'values':values,'required':required,'propOfRequirement':propOfRequirement,'color':color,'amino_acid_link':amino_acid_link}
     return perGramProtInfo
 
 def getColorFromProportion(prop):
