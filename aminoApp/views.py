@@ -387,7 +387,7 @@ def about(request):
     return render(request, 'aminoApp/about.html')
 
 def aboutSomething(request,subject):
-    if subject in ('definitions','sources','examples','contact','limitations','disclaimer'):
+    if subject in ('definitions','sources','examples','contact','limitations','disclaimer','further_reading'):
         templateAddress = 'aminoApp/about_'+subject+'.html'
         return render(request, templateAddress)
     else:
@@ -518,8 +518,8 @@ def showFood(request,food_dbid):
     perGramProtInfo = getRequirementsPerGramProtein(foodValue)
     # perGramProtInfo = {'chart':rendered_chart,'values':values,'required':required,'propOfRequirement':propOfRequirement}
     chartPerProtein = perGramProtInfo['chart']
-    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
-
+    # zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
+    zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'],perGramProtInfo['color'],perGramProtInfo['amino_acid_link'])
     # pie chart
     pieChartMacro = getMacroNutrientPie(foodValue)
     # pairs
