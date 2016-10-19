@@ -18,6 +18,9 @@ Look for complementary protein sources."{% endblock %}
 <p>Full name: {{ food.food_name }}</p>
 <p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
 
+{% if food.food_description %}
+<p>{{food.food_description}}</p>
+{% endif %}
 
 <h2>Amino acid quantities (g per 100 g)</h2>
 <embed src={{ chartAbsolute}} height="400">

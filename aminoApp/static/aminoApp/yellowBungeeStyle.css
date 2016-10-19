@@ -110,8 +110,10 @@ table {
 }
 
 .yellowColor {
+    /*actually black better for neutral color*/
     /*color: rgb(255,210,80);*/
-    color: rgb(255,140,100);
+    /*color: rgb(255,140,100);*/
+    color: rgb(0,0,0);
 }
 
 

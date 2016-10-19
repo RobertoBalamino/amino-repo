@@ -7,12 +7,14 @@
 
 {% block content %}
 
-<h1>Last added recipes</h1>
+<h1>List of recipes</h1>
+<!--why such spacing before table?-->
 
 <!--/*Each table row is defined with the <tr> tag. A table header is defined with the <th> tag. By default, table headings are bold and centered. A table data/cell is defined with the <td> tag.*/-->
-
+These are the last added recipes.
     {% if recipeList %}
-        <table style="width:100%">
+        <!--<table style="width:100%">-->
+        <table>
             <tr>
                 <!--<th>Recipe id</th>-->
                 <th>Recipe title</th>

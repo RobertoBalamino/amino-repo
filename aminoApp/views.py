@@ -528,6 +528,7 @@ def showFood(request,food_dbid):
     # pairList= FoodPair.objects.filter(foodOneId=food.food_dbid| foodTwoId=food.food_dbid).order_by('-pk')[:25]
     # form to look for pairs
     formForPair = FoodPairForm(initial={'foodOne': food.pk}) #FoodForm(initial={'foodOne': 61})
+
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
         'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,
         'chartPerProtein':chartPerProtein,'zippedInfoPerGramProt':zippedInfoPerGramProt}
