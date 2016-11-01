@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -16,6 +17,7 @@ urlpatterns = [
     # url(r'^menuTable/', views.showMenuTable, name='menuTable'),
     url(r'^recipeTable/', views.showRecipeTable, name='recipeTable'),
     url(r'^foodPairList/', views.showFoodPairList, name='foodPairTable'),
+    url(r'^foodPairs/', views.FoodPairList.as_view(), name='foodPairList'),
     url(r'^about/', views.about, name='about'),
     url(r'^about_(?P<subject>[\w]+)/', views.aboutSomething, name='aboutSomething'),
 
@@ -41,6 +43,8 @@ urlpatterns = [
     url(r'^aminoAcid_(?P<internal_name>[\w]+)/', views.presentAminoAcid, name='presentAminoAcid'),
     url(r'^listAminoAcids/', views.showAminoAcidList, name='listAminoAcid'),
     url(r'^targetPattern/(?P<patternId>[0-9]+)/$', views.presentTargetPattern, name='presentTargetPattern'),
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='aminoApp/robots.txt', content_type='text/plain')),
+    # url(r'^robots\.txt$', direct_to_template, {'template': 'aminoApp/robots.txt', 'mimetype': 'text/plain'}),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

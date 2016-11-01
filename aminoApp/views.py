@@ -7,6 +7,7 @@ from django.utils import timezone
 # from django.urls import reverse
 from django.views import generic
 from django.views.generic import CreateView
+from django.views.generic import ListView
 from django.utils.encoding import smart_text
 from django.db.models import Q #or in queryset
 import numpy as np
@@ -224,18 +225,18 @@ def listFoodValues(request,food_dbid):
     context = {'orderedTupleList':orderedTupleList,'food': food}
     return render(request, 'aminoApp/listNutritionalValues.html', context)
 
-def pairSearchReturn(request):
-    if 'foodOne' in request.GET and 'foodTwo' in request.GET:
-        message = 'You searched for: %r' % request.GET['foodOne']
-        foodOne=Food.objects.get(food_dbid=request.GET['foodOne'])
-        foodTwo=Food.objects.get(food_dbid=request.GET['foodTwo'])
-        context = analyseFoodPair(foodOne,foodTwo)
-        response = render(request, 'aminoApp/inspectFoodPair.html', context)
-    else:
-        message = 'You submitted an empty form.'
-        response = HttpResponse(message)
-    return response
-    # return HttpResponse(message)
+# def pairSearchReturn(request):
+#     if 'foodOne' in request.GET and 'foodTwo' in request.GET:
+#         message = 'You searched for: %r' % request.GET['foodOne']
+#         foodOne=Food.objects.get(food_dbid=request.GET['foodOne'])
+#         foodTwo=Food.objects.get(food_dbid=request.GET['foodTwo'])
+#         context = analyseFoodPair(foodOne,foodTwo)
+#         response = render(request, 'aminoApp/inspectFoodPair.html', context)
+#     else:
+#         message = 'You submitted an empty form.'
+#         response = HttpResponse(message)
+#     return response
+#     # return HttpResponse(message)
 
 def pairSearchReturnCreation(request):
     if 'foodOne' in request.GET and 'foodTwo' in request.GET:
@@ -244,12 +245,24 @@ def pairSearchReturnCreation(request):
         foodTwo=Food.objects.get(pk=request.GET['foodTwo'])
         context = analyseFoodPair(foodOne,foodTwo)
         nameOfPair = foodOne.getNameBegin() + '-' + foodTwo.getNameBegin() #foodOne.food_name[0:12]+'-'+foodTwo.food_name[0:12]
-        newpair = FoodPair(foodOneId=foodOne.food_dbid, foodTwoId=foodTwo.food_dbid,
-                           pair_name=nameOfPair,
-                           bestEfficiency=context['bestEfficiency'],bestProportion=context['bestPropOne'],
-                           )
-        newpair.save()
-        return redirect("/inspectLoadedFoodPair/"+str(newpair.pk))
+
+        existingPairs = FoodPair.objects.filter(foodOneId=foodOne.food_dbid,foodTwoId=foodTwo.food_dbid)
+        if existingPairs.exists():
+            pair = existingPairs.first()
+        else:
+            pair = FoodPair(foodOneId=foodOne.food_dbid, foodTwoId=foodTwo.food_dbid,
+                  pair_name=nameOfPair,
+                  bestEfficiency=context['bestEfficiency'],bestProportion=context['bestPropOne'],
+                  )
+            pair.save()
+        return redirect("/inspectLoadedFoodPair/"+str(pair.pk))
+
+        # newpair = FoodPair(foodOneId=foodOne.food_dbid, foodTwoId=foodTwo.food_dbid,
+        #                   pair_name=nameOfPair,
+        #                   bestEfficiency=context['bestEfficiency'],bestProportion=context['bestPropOne'],
+        #                   )
+        # newpair.save()
+        # return redirect("/inspectLoadedFoodPair/"+str(newpair.pk))
 
     else:
         message = 'You submitted an empty form.'
@@ -294,10 +307,19 @@ def showRecipeTable(request):
     context = {'recipeList': recipeList}
     return render(request, 'aminoApp/recipeTable.html', context)
 
+
 def showFoodPairList(request):
     pairList= FoodPair.objects.order_by('-pk')[:25]
     context = {'pairList': pairList}
     return render(request, 'aminoApp/foodPairTable.html', context)
+
+class FoodPairList(ListView):
+    #model = FoodPair
+    queryset = FoodPair.objects.order_by('-pk') #'-pk' '-bestEfficiency'
+    template_name = 'aminoApp/foodPairList.html'
+    context_object_name = 'pairList'
+    paginate_by = 15
+
 
 def choosePair(request):
     form = FoodPairForm() #FoodForm(initial={'foodOne': 61})
