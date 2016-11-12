@@ -120,6 +120,14 @@ class NutritionalValue(models.Model):
         #valueStr=str(getAminoVector(self))
         return self.description #+ valueStr #+ str(getAminoVector(self))
 
+class FoodCategory(models.Model):
+    cat_dbid = models.IntegerField(null=True)
+    name = models.CharField(max_length=200)
+    address_name = models.CharField(max_length=80,null=True)
+    description = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return self.name
+
 class Food(models.Model):
     # food: name, category, nutriment info...
     food_name = models.CharField(max_length=200)

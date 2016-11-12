@@ -17,6 +17,9 @@ Look for complementary protein sources."{% endblock %}
 
 <p>Full name: {{ food.food_name }}</p>
 <p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
+{% if food_cat %}
+<p>Category: <a href="/food-category_{{food_cat.address_name}}/">{{ food_cat.name}}</a></p>
+{% endif %}
 
 {% if food.food_description %}
 <p>{{food.food_description}}</p>

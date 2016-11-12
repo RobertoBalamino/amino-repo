@@ -37,4 +37,13 @@ You may for instance:
         <li>No recipe.</li>
     {% endfor %}
 </div>
+
+<div>
+    <h2>Last investigated food pairs</h2>
+    {% for pair in lastest_pair_list %}
+        <li><a href="/inspectLoadedFoodPair/{{ pair.pk}}">{{ pair.pair_name }}</a></li>
+    {% empty %}
+        <li>No food pair.</li>
+    {% endfor %}
+</div>
 {% endblock %}

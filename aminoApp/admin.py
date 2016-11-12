@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Food, NutritionalValue, Recipe, Ingredient, FoodPair, Nutriment
-from .models import RelativeAminoScore, TargetAminoPattern
+from .models import RelativeAminoScore, TargetAminoPattern, FoodCategory
 #admin.site.register(Question)
 #admin.site.register(Choice)
 
@@ -12,6 +12,7 @@ admin.site.register(NutritionalValue)
 admin.site.register(Recipe)
 admin.site.register(Ingredient)
 admin.site.register(FoodPair)
+admin.site.register(FoodCategory)
 admin.site.register(Nutriment)
 admin.site.register(RelativeAminoScore)
 admin.site.register(TargetAminoPattern)

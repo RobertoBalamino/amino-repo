@@ -13,7 +13,7 @@ from django.db.models import Q #or in queryset
 import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
-from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern #, NutrientDefinition
+from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern, FoodCategory #, NutrientDefinition
 
 #from utilities.loadFromUsda import loadFoodNutrimentInfo
 from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
@@ -41,6 +41,7 @@ class IndexView(generic.ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(IndexView, self).get_context_data(*args, **kwargs)
         context['lastest_recipe_list'] = Recipe.objects.order_by('-date_added')[:5]
+        context['lastest_pair_list'] = FoodPair.objects.order_by('-pk')[:5]
         return context
 
 class DetailView(generic.DetailView):
@@ -514,9 +515,26 @@ def showRecipe(request,recipeid):
     context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps,'zippedInfoPerGramProt':zippedInfoPerGramProt,'chartPerProtein':chartPerProtein,}
     return render(request, 'aminoApp/presentRecipe.html', context)
 
+def showFoodCategory(request,catAddress):
+    foodCat = FoodCategory.objects.get(address_name=catAddress)
+    foodsOfCat = Food.objects.filter(food_category=foodCat.cat_dbid)
+    context = {'category': foodCat,'foodList':foodsOfCat}
+    return render(request, 'aminoApp/presentFoodCategory.html', context)
+
+def listFoodCategories(request):
+    foodCats = FoodCategory.objects.all()
+    context = {'foodCats': foodCats}
+    return render(request, 'aminoApp/listFoodCategories.html', context)
+
 def showFood(request,food_dbid):
     food = Food.objects.get(food_dbid=food_dbid)
     foodValue = food.nutritional_value
+    # category
+    food_cat_set = FoodCategory.objects.filter(cat_dbid=food.food_category)
+    if food_cat_set.exists():
+        food_cat = food_cat_set[0] # food_cat.count() #
+    else:
+        food_cat = 'unknown' # food.food_category
     # recalculate efficiency
     aminoEff = getAminoEfficiencyFromNutrimentValue(foodValue)
     food.efficiency = aminoEff
@@ -553,7 +571,8 @@ def showFood(request,food_dbid):
 
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
         'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,
-        'chartPerProtein':chartPerProtein,'zippedInfoPerGramProt':zippedInfoPerGramProt}
+        'chartPerProtein':chartPerProtein,'zippedInfoPerGramProt':zippedInfoPerGramProt,
+        'food_cat':food_cat}  #'food_cat_name':food_cat_name}
 
     return render(request, 'aminoApp/presentFood.html', context)
 
