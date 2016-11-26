@@ -550,7 +550,8 @@ def showFood(request,food_dbid):
     minAminoAcid = Nutriment.objects.get(internal_name=amino_acid_names[minIndex])
     maxIndex = np.argmax(projProps)
     maxAminoAcid = Nutriment.objects.get(internal_name=amino_acid_names[maxIndex])
-
+    # calories
+    percentProteinCalories = 100 * food.nutritional_value.prot * 4 / food.nutritional_value.energ
     # amino acid scores (save)
     saveRelativeAminoScores(food)
     # per grams of protein
@@ -572,7 +573,7 @@ def showFood(request,food_dbid):
     context = {'food': food,'chartAbsolute': chartAbsolute,'pairList':pairList,'formForPair':formForPair,
         'minAminoAcid':minAminoAcid,'maxAminoAcid':maxAminoAcid,'pieChartMacro':pieChartMacro,
         'chartPerProtein':chartPerProtein,'zippedInfoPerGramProt':zippedInfoPerGramProt,
-        'food_cat':food_cat}  #'food_cat_name':food_cat_name}
+        'food_cat':food_cat,'percentProteinCalories':percentProteinCalories}  #'food_cat_name':food_cat_name}
 
     return render(request, 'aminoApp/presentFood.html', context)
 
