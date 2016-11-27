@@ -15,6 +15,7 @@
     <th>Value</th>
     <th>Unit</th>
     <th>Category</th>
+    <th>% RDA</th>
   </tr>
     {% for tup in orderedTupleList %}
   <tr>
@@ -22,6 +23,7 @@
     <td>{{tup.1}}</td>
     <td>{{tup.2}}</td>
     <td>{{tup.3}}</td>
+    <td>{{tup.4 |floatformat:1}}</td>
   </tr>
     {% endfor %}
 </table>

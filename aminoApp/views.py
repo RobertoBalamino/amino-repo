@@ -218,9 +218,13 @@ def listFoodValues(request,food_dbid):
         value = valueDict[key]
         unit = nutrient.unit
         categ = nutrient.category
+        if nutrient.RDA_AI is None:
+            percentRda = ''
+        else:
+            percentRda = 100 * value / nutrient.RDA_AI
         # totalDict[key]={'longName':nutrient.public_name,'unit':nutrient.unit,'value':valueDict[key]}
         stringList.append(longName + str(value) + unit)
-        tupleList.append((longName,value,unit,categ))
+        tupleList.append((longName,value,unit,categ,percentRda))
     orderedTupleList = sorted(tupleList, key=lambda tup:tup[3])
 
     context = {'orderedTupleList':orderedTupleList,'food': food}

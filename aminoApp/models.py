@@ -222,6 +222,7 @@ class Nutriment(models.Model):
     unit = models.CharField(max_length=10)
     description = models.TextField(null=True, blank=True)
     category = models.CharField(max_length=30)
+    RDA_AI = models.FloatField(null=True)
     def __str__(self):
         return self.public_name
     def capitalName(self):
