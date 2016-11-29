@@ -1,0 +1,33 @@
+{% extends "aminoApp/base.html" %}
+
+{% block title %}Tetramino - plot of food amino acids{% endblock %}
+{% block description %}" {{ nutrient.public_name }}. Foods rich in it, foods low in it..."{% endblock %}
+
+{% block content %}
+
+<h1>
+    {{ nutrient.capitalName }}
+   <!--{{ aminoAcid.public_name }}-->
+</h1>
+<!--<h2></h2>-->
+
+    <p>{{ nutrient.description |safe}}</p>
+
+
+
+<h2>Foods rich in it (in quantity per 100 g)</h2>
+    {% if highContentFoodsAndQuantities %}
+        <ul>
+        {% for foodQuant in highContentFoodsAndQuantities %}
+            <li><a href="/showFood/{{foodQuant.food.food_dbid}}">{{ foodQuant.food }} ({{ foodQuant.quantity|floatformat:0 }} {{ nutrient.unit }})</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No food rich in it.</p>
+    {% endif %}
+
+{% endblock %}
+
+
+
+

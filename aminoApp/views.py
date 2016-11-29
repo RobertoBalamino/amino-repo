@@ -224,7 +224,7 @@ def listFoodValues(request,food_dbid):
             percentRda = 100 * value / nutrient.RDA_AI
         # totalDict[key]={'longName':nutrient.public_name,'unit':nutrient.unit,'value':valueDict[key]}
         stringList.append(longName + str(value) + unit)
-        tupleList.append((longName,value,unit,categ,percentRda))
+        tupleList.append((longName,value,unit,categ,percentRda,nutrient.internal_name))
     orderedTupleList = sorted(tupleList, key=lambda tup:tup[3])
 
     context = {'orderedTupleList':orderedTupleList,'food': food}
@@ -594,6 +594,17 @@ def presentAminoAcid(request,internal_name):
     # highContentFoods = [() for ]
     context = {'aminoAcid': aminoDefinition,'highScores':highScores,'lowScores':lowScores,'highContentFoodsAndQuantities':highContentFoodsAndQuantities}
     return render(request, 'aminoApp/presentAminoAcid.html', context)
+
+def presentNutrient(request,internal_name):
+    nutrientDefinition = Nutriment.objects.get(internal_name=internal_name)
+    filterProp = '-nutritional_value__'+internal_name
+    highContentFoods = Food.objects.order_by(filterProp)[0:20]
+    highContentFoodsAndQuantities = [{'food':food,'quantity':getattr(food.nutritional_value,internal_name)} for food in highContentFoods]
+
+    # highContentFoods = [() for ]
+    context = {'nutrient': nutrientDefinition,'highContentFoodsAndQuantities':highContentFoodsAndQuantities}
+    return render(request, 'aminoApp/presentNutrient.html', context)
+
 
 def showAminoAcidList(request):
     aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')[:25]
