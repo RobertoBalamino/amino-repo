@@ -13,7 +13,9 @@
 
     <p>{{ nutrient.description |safe}}</p>
 
-
+{% if nutrient.RDA_AI %}
+    <p>Recommended Dietary Allowance:  {{ nutrient.RDA_AI|floatformat:0}} mg/day</p>
+{% endif %}
 
 <h2>Foods rich in it (in quantity per 100 g)</h2>
     {% if highContentFoodsAndQuantities %}

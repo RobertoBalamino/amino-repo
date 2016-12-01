@@ -23,7 +23,11 @@
     <td>{{tup.1}}</td>
     <td>{{tup.2}}</td>
     <td>{{tup.3}}</td>
-    <td>{{tup.4 |floatformat:1}}</td>
+    <td>
+        {% if tup.4 %}
+            {{tup.4 |floatformat:0}} %
+        {% endif %}
+        </td>
   </tr>
     {% endfor %}
 </table>

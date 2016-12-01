@@ -265,13 +265,26 @@ def getFoodAminoPlotAbsolute(food):
     custom_style = getCustomPygalStyle()
     # title=u'Amino acid quantities (g)',
     bar_chart = pygal.Bar(style=custom_style,legend_at_bottom=True,)                                            # Then create a bar graph object
+
+    amino_acid_names = getAminoAcidNames()
+    foodAminoProportions = getAminoProportionsOfComplete(foodAminoVector)
+    balancedVector = foodAminoProportions['projected']
+
+    propsOfProj = foodAminoProportions['propsOfProj']
+    allZipped = zip(propsOfProj,foodAminoVector,balancedVector,amino_acid_names)
+    allZippedSorted = sorted(allZipped, key = lambda t: t[0])
+    unzipped = list(zip(*allZippedSorted))
+    propsOfProj = unzipped[0]
+    foodAminoVector = unzipped[1]
+    balancedVector = unzipped[2]
+    amino_acid_names = unzipped[3]
+
     bar_chart.add('Amino acids in the food', foodAminoVector)  # Add some values
     # amino_acid_names = ('trp_g','thr_g','ile_g','leu_g','lys_g','met_g','cys_g','phe_g','tyr_g','val_g','his_g')
-    amino_acid_names = getAminoAcidNames()
-    bar_chart.x_labels = amino_acid_names
 
-    foodAminoProportions = getAminoProportionsOfComplete(foodAminoVector)
-    bar_chart.add('Balanced equivalent', foodAminoProportions['projected'])  # Add some values
+    bar_chart.x_labels = amino_acid_names
+    # bar_chart.add('Balanced equivalent', foodAminoProportions['projected'])  # Add some values
+    bar_chart.add('Balanced equivalent', balancedVector)  # Add some values
     chartAbsolute=bar_chart.render_data_uri()
     return chartAbsolute
 
