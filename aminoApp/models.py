@@ -139,6 +139,7 @@ class Food(models.Model):
     nutritional_value = models.ForeignKey('NutritionalValue', on_delete=models.CASCADE,null=True)
     efficiency = models.FloatField(null=True)
     food_description = models.TextField(null=True, blank=True)
+    picture_file = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.getNameBegin() #+str(self.food_dbid) #self.food_name
@@ -214,6 +215,7 @@ class FoodPair(models.Model):
             pairName = self.pair_name
         return pairName
 
+
 class Nutriment(models.Model):
     # a nutrient (for instance an amino acid)
     dbid = models.IntegerField()
@@ -221,8 +223,9 @@ class Nutriment(models.Model):
     public_name = models.CharField(max_length=20)
     unit = models.CharField(max_length=10)
     description = models.TextField(null=True, blank=True)
+    abbreviations = models.CharField(max_length=100, null=True, blank=True )
     category = models.CharField(max_length=30)
-    RDA_AI = models.FloatField(null=True)
+    RDA_AI = models.FloatField(null=True, blank=True)
     def __str__(self):
         return self.public_name
     def capitalName(self):
@@ -242,3 +245,31 @@ class TargetAminoPattern(models.Model):
     description = models.TextField(null=True, blank=True)
     def __str__(self):
         return self.name
+
+
+class QuestionAnswer(models.Model):
+    question = models.CharField(max_length=200)
+    answer = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=30, null=True, blank=True)
+    showQuestion = models.NullBooleanField(default=True)
+    def __str__(self):
+        if self.showQuestion:
+            questionString = self.question
+        else:
+            questionString = self.question+'(hidden)'
+        return questionString
+
+class LiteratureReference(models.Model):
+    in_text = models.CharField(max_length=100)
+    reference_APA = models.TextField()
+    abstract = models.TextField(null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=30, null=True, blank=True)
+    def __str__(self):
+        return self.in_text
+
+class ReferenceSupportsAnswer(models.Model):
+    reference = models.ForeignKey(LiteratureReference, on_delete=models.CASCADE)
+    answer = models.ForeignKey(QuestionAnswer, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.reference)

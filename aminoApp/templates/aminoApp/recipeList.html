@@ -1,0 +1,59 @@
+{% extends "aminoApp/baseRecipe.html" %}
+
+{% block title %}Tetramino - menus in the database{% endblock %}
+
+{% block description %}"List of recipes by amino acid balancing efficiency"{% endblock %}
+
+
+{% block content %}
+
+<h1>List of recipes</h1>
+<!--why such spacing before table?-->
+
+<!--/*Each table row is defined with the <tr> tag. A table header is defined with the <th> tag. By default, table headings are bold and centered. A table data/cell is defined with the <td> tag.*/-->
+This is a list of recipes with protein efficiency calculated based on the sum of amino acid quantities.
+    {% if recipeList %}
+        <!--<table style="width:100%">-->
+        <table>
+            <tr>
+                <!--<th>Recipe id</th>-->
+                <th>Recipe title</th>
+                <th>Efficiency</th>
+                <th>Added on</th>
+                <!--<th>Category</th>-->
+                <!--<th>Efficiency</th>-->
+            </tr>
+        {% for recipe in recipeList %}
+            <tr>
+                <!--<td>{{ recipe.pk }}</td>-->
+                <td><a href="/showRecipe/{{ recipe.pk }}/">{{ recipe.title }}</a> </td>
+                <td>{{ recipe.efficiency | floatformat:2 }} </td>
+                <td>{{ recipe.date_added}} </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No recipe is available.</p>
+    {% endif %}
+
+    {% if is_paginated %}
+    <p>
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/recipeList/?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/recipeList/?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    </p>
+    {% endif %}
+
+{% endblock %}
+
+

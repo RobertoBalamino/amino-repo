@@ -19,11 +19,23 @@
         {{ recipe.description}}
     {% endif %}
 <h2>Amino acids</h2>
-<p>Efficiency: {{efficiency|floatformat:2}}.</p>
+<p>Efficiency: {{efficiency|floatformat:2}}.
+<a target="_blank" href="/about_definitions/#efficiency" title="Essential amino acid efficiency relative to pattern 1. Click for more information on how this is defined.">
+    <i class="icon-help-circled"></i></a>
+
+
+</p>
 
 <embed src={{ chartProps }} height="400">
 
 <p><a href="/plotRecipeAmino/{{recipe.pk}}">More plots for this recipe</a></p>
+
+<h2>General nutritional values</h2>
+Macronutrient quantities (g) per 100 g
+<embed src={{ pieChartMacro}} height="200">
+<p>Energy: {{ recipe_nutritional_value.energ| floatformat:0}} kcal.</p>
+<p>{{ percentProteinCalories| floatformat:1}} percents of proteins in total calories.</p>
+
 
 <!--requirements per g of protein-->
 <h2>Ratio of essential amino acids to total protein (mg/g)</h2>

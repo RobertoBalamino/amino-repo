@@ -14,6 +14,7 @@ import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
 from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern, FoodCategory #, NutrientDefinition
+from .models import QuestionAnswer, LiteratureReference, ReferenceSupportsAnswer
 
 #from utilities.loadFromUsda import loadFoodNutrimentInfo
 from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
@@ -308,10 +309,15 @@ def showFoodTable(request):
     return render(request, 'aminoApp/foodTable.html', context)
 
 def showRecipeTable(request):
-    recipeList= Recipe.objects.order_by('-date_added')[:25]
+    recipeList= Recipe.objects.order_by('-date_added')[:50]
     context = {'recipeList': recipeList}
     return render(request, 'aminoApp/recipeTable.html', context)
 
+class RecipeList(ListView):
+    queryset= Recipe.objects.order_by('-date_added')
+    template_name = 'aminoApp/recipeList.html'
+    context_object_name = 'recipeList'
+    paginate_by = 20
 
 def showFoodPairList(request):
     pairList= FoodPair.objects.order_by('-pk')[:25]
@@ -325,6 +331,11 @@ class FoodPairList(ListView):
     context_object_name = 'pairList'
     paginate_by = 15
 
+class FoodListByEfficiency(ListView):
+    queryset = Food.objects.order_by('efficiency') #'-pk' '-bestEfficiency'
+    template_name = 'aminoApp/foodListFromClass.html'
+    context_object_name = 'foodList'
+    paginate_by = 25
 
 def choosePair(request):
     form = FoodPairForm() #FoodForm(initial={'foodOne': 61})
@@ -414,7 +425,7 @@ def about(request):
     return render(request, 'aminoApp/about.html')
 
 def aboutSomething(request,subject):
-    if subject in ('definitions','sources','examples','contact','limitations','disclaimer','further_reading'):
+    if subject in ('definitions','sources','examples','contact','limitations','disclaimer','further_reading','FAQ'):
         templateAddress = 'aminoApp/about_'+subject+'.html'
         return render(request, templateAddress)
     else:
@@ -512,11 +523,18 @@ def showRecipe(request,recipeid):
     # per grams of protein
     # chartPerProtein = getRequirementsPerGramProtein(foodValue)
     perGramProtInfo = getRequirementsPerGramProtein(recipeNutrValue)
-
     chartPerProtein = perGramProtInfo['chart']
     zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'],perGramProtInfo['color'],perGramProtInfo['amino_acid_link'])
     # zippedInfoPerGramProt = sorted(zippedInfoPerGramProt, key = lambda t: t[1])
-    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps,'zippedInfoPerGramProt':zippedInfoPerGramProt,'chartPerProtein':chartPerProtein,}
+
+    # macronutrients
+    # calories
+    percentProteinCalories = 100 * recipeNutrValue.prot * 4 / recipeNutrValue.energ
+	 # pie chart
+    pieChartMacro = getMacroNutrientPie(recipeNutrValue)
+
+    context = {'efficiency': recipeEff,'ingredients':ingredients,'recipe':recipe,'chartProps':chartProps,
+    'zippedInfoPerGramProt':zippedInfoPerGramProt,'chartPerProtein':chartPerProtein,'percentProteinCalories':percentProteinCalories,'pieChartMacro':pieChartMacro,'recipe_nutritional_value':recipeNutrValue,}
     return render(request, 'aminoApp/presentRecipe.html', context)
 
 def showFoodCategory(request,catAddress):
@@ -610,3 +628,18 @@ def showAminoAcidList(request):
     aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')[:25]
     context = {'aminoAcids': aminoAcids}
     return render(request, 'aminoApp/aminoAcidList.html', context)
+
+def showQuestionsAndAnswers(request):
+    qas = QuestionAnswer.objects.filter(showQuestion=True)
+    qa_with_refs = []
+    for qa in qas:
+        ref_supporting_answer = ReferenceSupportsAnswer.objects.filter(answer=qa)
+        references = [refsup.reference for refsup in ref_supporting_answer]
+        qa_with_refs.append({'qa':qa,'ref':references})
+    context = {'qas': qas,'qa_with_refs':qa_with_refs}
+    return render(request, 'aminoApp/listQuestionsAnswers.html', context)
+
+def showLiteratureReferences(request):
+    articles = LiteratureReference.objects.filter()
+    context = {'articles': articles}
+    return render(request, 'aminoApp/listLiteratureReferences.html', context)

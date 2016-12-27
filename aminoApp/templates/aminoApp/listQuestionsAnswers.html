@@ -1,0 +1,41 @@
+{% extends "aminoApp/baseAbout.html" %}
+
+
+{% block title %}Tetramino - Frequently asked questions about amino acids in human nutrition.{% endblock %}
+{% block description %}Frequently asked questions about amino acids and proteins in human nutrition, and how to combine them.{% endblock %}
+
+{% block content %}
+
+<h1>Frequently asked questions</h1>
+All questions:
+<ul>
+{% for qAndA in qas %}
+  <li>
+      <a href="#{{qAndA.pk}}">{{qAndA.question}}</a>
+  </li>
+{% endfor %}
+</ul>
+
+<!--{% for qAndA in qas %}-->
+<!--  <h2 id="{{qAndA.pk}}">{{qAndA.question}} </h2>-->
+<!--  {{qAndA.answer}}-->
+<!--{% endfor %}-->
+
+{% for qAndA in qa_with_refs %}
+  <h2 id="{{qAndA.qa.pk}}">{{qAndA.qa.question}} </h2>
+  <p>{{qAndA.qa.answer}}
+  </p>
+  {% if qAndA.ref%}
+    Further reading:
+    {% for ref in  qAndA.ref%}
+        {{ref.reference_APA |safe}}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+
+
+
+
+
+
+{% endblock %}

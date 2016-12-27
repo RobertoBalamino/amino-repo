@@ -1,12 +1,16 @@
 {% extends "aminoApp/baseAminoAcids.html" %}
 
 {% block title %}Tetramino - list of amino acids{% endblock %}
+{% block description %}Tetramino - list of proteinogenic amino acids for more detailed information{% endblock %}
 
 {% block content %}
 
 
 <h1>Amino acids</h1>
-
+<p>
+    Below is a list of proteinogenic amino acids, starting with essential amino acids.
+Get detailed information about each amino acid, including a list of foods containing it in the highest quantities, by clicking on it:
+       </p>
         <ul>
         {% for acid in aminoAcids %}
             <!--<li><a href="/foodapp/plotFoodAmino/{{ food.food_dbid }}/">{{ food.food_name }}</a></li>-->

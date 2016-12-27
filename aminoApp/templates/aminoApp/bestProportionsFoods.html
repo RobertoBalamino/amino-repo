@@ -2,7 +2,12 @@
 
 {% extends "aminoApp/baseAssociations.html" %}
 
-{% block title %}Amino acid sums for pair of foods{% endblock %}
+{% block title %}
+Amino acid sums for association of foods:
+    {% for food in foods %}
+        {{ food.food_name }}
+    {% endfor %}
+{% endblock %}
 
 {% block content %}
 

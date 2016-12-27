@@ -4,7 +4,7 @@
 
 {% block description %}
 "How good is {{ food.getKeywordName }} as a source of proteins and amino acids?
-{{ food.getKeywordName }} in relatively poor in {{ minAminoAcid }} and rich in {{ maxAminoAcid }}.
+{{ food.getKeywordName }} is relatively poor in {{ minAminoAcid }} and rich in {{ maxAminoAcid }}.
 Look for complementary protein sources."{% endblock %}
 
 {% block keywords %}"{{ food.getKeywordName }} amino acids, {{ food.getKeywordName }} proteins"{% endblock %}
@@ -16,14 +16,21 @@ Look for complementary protein sources."{% endblock %}
 </h1>
 
 <p>Full name: {{ food.food_name }}</p>
-<p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
-{% if food_cat %}
-<p>Category: <a href="/food-category_{{food_cat.address_name}}/">{{ food_cat.name}}</a></p>
-{% endif %}
+
 
 {% if food.food_description %}
 <p>{{food.food_description}}</p>
 {% endif %}
+
+{% if food.picture_file %}
+<img src="/static/aminoApp/foodPictures/{{food.picture_file}}" height="200"/>
+{% endif %}
+
+{% if food_cat %}
+<p>Category: <a href="/food-category_{{food_cat.address_name}}/">{{ food_cat.name}}</a></p>
+{% endif %}
+
+<p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
 
 <h2>Amino acid quantities (g per 100 g)</h2>
 <embed src={{ chartAbsolute}} height="400">

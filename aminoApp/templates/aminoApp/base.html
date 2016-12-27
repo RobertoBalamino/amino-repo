@@ -9,10 +9,11 @@
           href="https://fonts.googleapis.com/css?family=Monoton|Raleway|Roboto|Amatic+SC">
 
     <link rel="stylesheet" href="{% static "aminoApp/yellowBungeeStyle.css" %}" />
+    <link rel="stylesheet" href="{% static "aminoApp/fontello.css" %}" />
     <!--<link href="{{STATIC_URL}}foodapp/style.css" rel="stylesheet" type="text/css">-->
     <title>{% block title %}Tetramino - helping you balance amino acid intakes{% endblock %}</title>
-    <meta name="description" content={% block description %}"Investigation of complementary protein sources in terms of amino acid contents"{% endblock %}>
-    <meta name="keywords" content={% block keywords %}"amino acid balance, complementary proteins, complete protein"{% endblock %}>
+    <meta name="description" content="{% block description %}Investigation of complementary protein sources in terms of amino acid contents{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}amino acid balance, complementary proteins, complete protein{% endblock %}">
 
     <!--google analytics-->
     <script>
@@ -47,7 +48,8 @@
                 <li class="nav-foods"><a href="/listFoods/" class="foods">Foods</a></li>
                 <!--<li class="nav-foodpairs"><a href="/choosePair/">Food pairs</a></li>-->
                 <li class="nav-foodpairs"><a href="/foodPairs/">Food pairs</a></li>
-                <li class="nav-recipes"><a href="/recipeTable/">Recipes</a></li>
+                <!--<li class="nav-recipes"><a href="/recipeTable/">Recipes</a></li>-->
+                <li class="nav-recipes"><a href="/recipeList/">Recipes</a></li>
                 <li class="nav-aminos"><a href="/listAminoAcids/">Amino acids</a></li>
                 <li class="nav-about"><a href="/about/">About</a></li>
                 <!-- menus pairs contact blog news -->

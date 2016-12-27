@@ -1,6 +1,6 @@
 {% extends "aminoApp/baseAminoAcids.html" %}
 
-{% block title %}Tetramino - plot of food amino acids{% endblock %}
+{% block title %}Amino acid {{ aminoAcid.public_name }}{% endblock %}
 {% block description %}"Amino acid {{ aminoAcid.public_name }}. Foods rich in it, foods low in it..."{% endblock %}
 
 {% block content %}
@@ -10,6 +10,9 @@
    <!--{{ aminoAcid.public_name }}-->
 </h1>
 <!--<h2></h2>-->
+    {% if aminoAcid.abbreviations %}
+        Abbreviations: {{ aminoAcid.abbreviations }}
+    {% endif %}
 
     <p>{{ aminoAcid.description |safe}}</p>
 
