@@ -676,8 +676,11 @@ def showFood(request,food_dbid):
     return render(request, 'aminoApp/presentFood.html', context)
 
 
-def presentAminoAcid(request,internal_name):
-    aminoDefinition = Nutriment.objects.get(internal_name=internal_name)
+def presentAminoAcid(request,link_name):
+
+    # aminoDefinition = Nutriment.objects.get(internal_name=internal_name)
+    aminoDefinition = Nutriment.objects.get(public_name=link_name.replace('_',' '))
+    internal_name = aminoDefinition.internal_name
     # high and low scores of foods for this amino acid
     scores = RelativeAminoScore.objects.filter(aminoAcid=aminoDefinition).order_by('score')
     highScores = scores.filter(score__gt=1).order_by('-score')[0:20]

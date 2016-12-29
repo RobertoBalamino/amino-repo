@@ -14,7 +14,7 @@ Get detailed information about each amino acid, including a list of foods contai
         <ul>
         {% for acid in aminoAcids %}
             <!--<li><a href="/foodapp/plotFoodAmino/{{ food.food_dbid }}/">{{ food.food_name }}</a></li>-->
-            <li><a href="/aminoAcid_{{acid.internal_name}}/">{{ acid.public_name }}</a></li>
+            <li><a href="/amino-acid-{{acid.link_name}}/">{{ acid.public_name }}</a></li>
 
         {% endfor %}
         </ul>

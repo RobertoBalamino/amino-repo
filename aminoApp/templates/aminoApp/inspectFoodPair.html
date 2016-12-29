@@ -2,8 +2,8 @@
 
 {% extends "aminoApp/baseAssociations.html" %}
 
-{% block title %}Amino acid sums for pair of foods{% endblock %}
-{% block description %}Find out best proportion for food pair {{pairName}} in terms of amino acid balancing.{% endblock %}
+{% block title %}Amino acid sums for {{ foodOne.food_name }} paired with {{ foodTwo.food_name }}{% endblock %}
+{% block description %}Find out best proportion for food pair {{pairName}} in terms of amino acid balancing. {% endblock %}
 
 {% block content %}
 

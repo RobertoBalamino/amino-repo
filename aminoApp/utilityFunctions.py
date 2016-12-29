@@ -352,7 +352,7 @@ def getRequirementsPerGramProtein(nutVal):
     # WHO protein and aa requirements p.245
     amino_acids = ['histidine','isoleucine','leucine','lysine','methionine','methionine + cysteine','phenylalanine + tyrosine','threonine','tryptophan','valine']
     amino_acids_short = ['his','ile','leu','lys','met','met + cys','phe + tyr','thr','trp','val']
-    amino_acid_link = ['his','ile','leu','lys','met','met','phe','thr','trp','val']
+    amino_acid_link = ['histidine','isoleucine','leucine','lysine','methionine','methionine','phenylalanine','threonine','tryptophan','valine']
     required = [15,30,59,45,16,22,30,23,6,39]
     absoluteValues = [nutVal.his_g,nutVal.ile_g,nutVal.leu_g,nutVal.lys_g,nutVal.met_g,nutVal.met_g+nutVal.cys_g,nutVal.phe_g+nutVal.tyr_g,nutVal.thr_g,nutVal.trp_g,nutVal.val_g]
     values = [1000*aval/nutVal.prot for aval in absoluteValues]

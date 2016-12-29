@@ -58,7 +58,7 @@ Macronutrient quantities (g) per 100 g
         </tr>
     {% for row in zippedInfoPerGramProt %}
         <tr>
-            <td><a href="/aminoAcid_{{row.4}}_g">{{row.0}}</a></td>
+            <td><a href="/amino-acid-{{row.4}}">{{row.0}}</a></td>
             <td><span class="{{row.3}}">{{row.1| floatformat:1 }}</span></td>
             <td>{{row.2| floatformat:0}}</td>
         </tr>
@@ -68,7 +68,7 @@ Macronutrient quantities (g) per 100 g
 <div style="clear:both;"></div>
 
 <h2>Better with other proportions?</h2>
-<p>Have a look <a href="/bestProportionsOfRecipeFoods/{{recipe.pk}}">here</a> to see
+<p>Have a look <a href="/best-proportions-recipe-foods/{{recipe.pk}}">here</a> to see
 how efficient can combinations of the same ingredients in different proportions be.</p>
 
 

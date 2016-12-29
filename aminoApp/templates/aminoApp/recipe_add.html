@@ -35,7 +35,7 @@
         </form>
 
         <p>Or add a recipe with another number of ingredients</p>
-        <form action="/composeRecipe/" method="get">
+        <form action="/compose-recipe/" method="get">
             {% csrf_token %}
             {{ number_form.as_ul }}
             <input type="submit" value="Change number of ingredients" />
