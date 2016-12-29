@@ -230,6 +230,9 @@ class Nutriment(models.Model):
         return self.public_name
     def capitalName(self):
         return self.public_name.capitalize()
+    def link_name(self):
+        # foodName = foodName.replace(unneededStr,'')
+        return self.public_name.replace(' ','_')
 
 class RelativeAminoScore(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, default=DEFAULT_FOOD_ID)

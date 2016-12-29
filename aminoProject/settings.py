@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'e#bkigkwzd8)jv3#4wur070&%ev019l0ngbri6nb--y26znx&3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #  True
+DEBUG = True #  True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['www.tetramino.net']

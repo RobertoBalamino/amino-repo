@@ -1,0 +1,47 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+{% block title %}Tetramino - list of food lists by nutrient values{% endblock %}
+
+{% block content %}
+
+<h1>Food lists by nutrient content</h1>
+<p>
+Foods available for exploration may be sorted with regard to their nutrient content, in various ways.</a>.
+</p>
+
+
+<h2>Nutrient content by mass</h2>
+Absolute nutrient values for 100 g of food:
+<!--<ul>-->
+<!--    {% for nutr in allNutrients %}-->
+<!--    <li><a href="/list-foods-by-{{nutr.public_name}}/"> {{nutr.public_name}}</a></li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+</br>
+    {% for nutr in allNutrients %}
+    <a href="/list-foods-by-{{nutr.link_name}}/">by {{nutr.public_name}}</a>.
+    {% endfor %}
+
+
+<h2>Nutrient content by energy</h2>
+Dividing nutrient values by number of calories.
+</br>
+<!--<ul>-->
+<!--    <li><a href="/list-foods-by-lysine-per-energy/"> lysine</a></li>-->
+<!--</ul>-->
+Foods ordered
+    {% for nutr in allNutrients %}
+    <a href="/list-foods-by-{{nutr.link_name}}-per-energy/">by {{nutr.public_name}}</a>.
+    {% endfor %}
+
+<h2>Amino acid proportion of protein</h2>
+In the case of amino acids, it makes sense to look at their ratio to total protein:
+</br>
+{% for nutr in aminoAcids %}
+    <a href="/list-foods-by-{{nutr.link_name}}-per-protein/">by {{nutr.public_name}}</a>.
+    {% endfor %}
+<!--<ul>-->
+<!--    <li><a href="/list-foods-by-lysine-per-protein/"> lysine</a></li>-->
+<!--</ul>-->
+
+{% endblock %}

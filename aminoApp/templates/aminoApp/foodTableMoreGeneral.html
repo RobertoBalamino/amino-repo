@@ -1,0 +1,57 @@
+{% extends "aminoApp/baseFoods.html" %}
+
+{% block title %}Tetramino - list of foods in the database{% endblock %}
+
+{% block content %}
+<h1>Foods by {{sortNutrient.public_name}} content</h1>
+<p>{{descriptionText}}</p>
+
+    {% if foodList %}
+        <table>
+        <!--<table style="width:100%">-->
+            <tr>
+                <th>Food</th>
+                <th>{{columnTitle}}</th>
+                <!--<th>{{sortNutrient.public_name}} ({{sortNutrient.unit}})</th>-->
+            </tr>
+        {% for food in foodList %}
+            <tr>
+                <td><a href="/showFood/{{ food.food_dbid }}/">{{ food.food_name }}</a> </td>
+                <td>{{ food.sortValue |floatformat:4}}</td>
+            </tr>
+            <!--<li><a href="/foodapp/{{ food.id }}/">{{ food.food_name }}</a></li>-->
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No food is available.</p>
+    {% endif %}
+
+
+<p>
+    <div class="pagination">
+        <span class="step-links">
+            {% if foodList.has_previous %}
+                <a href="?page={{ foodList.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ foodList.number }} of {{ foodList.paginator.num_pages }}.
+            </span>
+
+            {% if foodList.has_next %}
+                <a href="?page={{ foodList.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+</p>
+
+    <!--sorting: does not work for now-->
+    <!--<p>-->
+        <!--http://stackoverflow.com/questions/33350362/django-listview-form-to-filter-and-sort-->
+    <!--    Sort by: <a href="/foodPairs/?orderby=-pk">first investigation</a>-->
+    <!--    <a href="/foodPairs/?orderby=bestEfficiency">best efficiency</a>-->
+    <!--</p>-->
+
+{% endblock %}
+
+

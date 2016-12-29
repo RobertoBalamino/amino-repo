@@ -10,6 +10,8 @@ from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.utils.encoding import smart_text
 from django.db.models import Q #or in queryset
+from django.db.models import F
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
@@ -221,6 +223,8 @@ def listFoodValues(request,food_dbid):
         categ = nutrient.category
         if nutrient.RDA_AI is None:
             percentRda = ''
+        elif value is None:
+            percentRda = ''
         else:
             percentRda = 100 * value / nutrient.RDA_AI
         # totalDict[key]={'longName':nutrient.public_name,'unit':nutrient.unit,'value':valueDict[key]}
@@ -307,6 +311,78 @@ def showFoodTable(request):
     foodList= Food.objects.order_by('-pub_date')[:25]
     context = {'foodList': foodList}
     return render(request, 'aminoApp/foodTable.html', context)
+
+# def showFoodTableGeneralOrder(request,nutrSortVar):
+#     #  we want to order by: energy +-, amino acid / energy, amino acid / protein
+#     # nutrient / energy
+#     # nutrSortVar = 'energ' # '-pub_date'
+#     sortNutrient = Nutriment.objects.get(internal_name=nutrSortVar)
+#     sortVar = 'nutritional_value__'+nutrSortVar
+#     divVar = 'nutritional_value__'+'prot'
+
+#     # foodList= Food.objects.order_by(sortVar)[:50]
+#     # foodList= Food.objects.annotate(sortValue=F(sortVar)).order_by('sortValue').reverse()[:50]
+#     foodList= Food.objects.annotate(sortValue=F(sortVar)/F(divVar)).order_by('sortValue').reverse()[:100]
+#     context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar}
+#     return render(request, 'aminoApp/foodTableMoreGeneral.html', context)
+
+def listFoodLists(request):
+    allNutrients = Nutriment.objects.all()
+    aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')
+    context = {'allNutrients': allNutrients,'aminoAcids':aminoAcids}
+    return render(request, 'aminoApp/listFoodLists.html',context)
+
+def showFoodTableNutrientOrder(request,nutrSortVar):
+    #  order by nutrient content
+    nutrSortVar = nutrSortVar.replace('_',' ') # underscore for link but not in public name
+    sortNutrient = Nutriment.objects.get(public_name=nutrSortVar)
+    sortVar = 'nutritional_value__'+sortNutrient.internal_name # nutrSortVar
+    foodListAll = Food.objects.annotate(sortValue=F(sortVar)).order_by('sortValue').reverse() #[:100]
+    paginator = Paginator(foodListAll, 25)
+    page = request.GET.get('page')
+    try:
+        foodList = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        foodList = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        foodList = paginator.page(paginator.num_pages)
+
+    descriptionText = 'Foods sorted by '+nutrSortVar+' content per 100 g.'
+    columnTitle = sortNutrient.public_name+' ('+sortNutrient.unit+')'
+    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,'descriptionText':descriptionText,'columnTitle':columnTitle}
+    return render(request, 'aminoApp/foodTableMoreGeneral.html', context)
+
+def showFoodTableNutrientDividedOrder(request,nutrSortVar,nutrDivVar):
+    #  order by nutrient content divided by something else: energy, protein...
+    nutrSortVar = nutrSortVar.replace('_',' ') # underscore for link but not in public name
+    sortNutrient = Nutriment.objects.get(public_name=nutrSortVar)
+    sortVar = 'nutritional_value__'+sortNutrient.internal_name
+    divNutrient = Nutriment.objects.get(public_name=nutrDivVar)
+    divVar = 'nutritional_value__'+divNutrient.internal_name # 'prot'
+
+    # foodList= Food.objects.order_by(sortVar)[:50]
+    # foodList= Food.objects.annotate(sortValue=F(sortVar)).order_by('sortValue').reverse()[:50]
+    foodListAll = Food.objects.annotate(sortValue=F(sortVar)/F(divVar)).order_by('sortValue').reverse()
+    paginator = Paginator(foodListAll, 25)
+    page = request.GET.get('page')
+    try:
+        foodList = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        foodList = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        foodList = paginator.page(paginator.num_pages)
+
+    divText = nutrDivVar+' ('+divNutrient.unit+')'
+    descriptionText = 'Foods sorted by '+nutrSortVar+' content (g) divided by '+divText+'.'
+    columnTitle = sortNutrient.public_name+' ('+sortNutrient.unit+')/'+divText
+
+    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,'descriptionText':descriptionText,'columnTitle':columnTitle}
+    return render(request, 'aminoApp/foodTableMoreGeneral.html', context)
+
 
 def showRecipeTable(request):
     recipeList= Recipe.objects.order_by('-date_added')[:50]
@@ -625,7 +701,7 @@ def presentNutrient(request,internal_name):
 
 
 def showAminoAcidList(request):
-    aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')[:25]
+    aminoAcids= Nutriment.objects.filter(category='amino acid (essential)').order_by('public_name')
     context = {'aminoAcids': aminoAcids}
     return render(request, 'aminoApp/aminoAcidList.html', context)
 
