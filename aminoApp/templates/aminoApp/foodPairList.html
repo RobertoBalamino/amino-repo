@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Already investigated food pairs</h1>
-
+The 'best efficiencies' are the respective highest amino acid efficiencies that can be obtained by combining the two foods of the pair.
     {% if pairList %}
         <table>
         <!--<table style="width:100%">-->
@@ -38,13 +38,13 @@
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="/foodPairs/?page={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="/food-pairs/?page={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
                 <span class="page-current">
                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
                 {% if page_obj.has_next %}
-                    <a href="/foodPairs/?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="/food-pairs/?page={{ page_obj.next_page_number }}">next</a>
                 {% endif %}
             </span>
         </div>

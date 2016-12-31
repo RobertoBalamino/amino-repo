@@ -10,12 +10,15 @@
    <!--{{ aminoAcid.public_name }}-->
 </h1>
 <!--<h2></h2>-->
+
+    <p>{{ aminoAcid.description |safe}}</p>
     {% if aminoAcid.abbreviations %}
         Abbreviations: {{ aminoAcid.abbreviations }}
     {% endif %}
 
-    <p>{{ aminoAcid.description |safe}}</p>
-
+    {% if aminoAcid.formula %}
+       </br> Formula: {{ aminoAcid.formula |safe}}.
+    {% endif %}
 
 <h2>Foods rich in it (relatively to target pattern)</h2>
     {% if highScores %}

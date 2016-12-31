@@ -167,7 +167,7 @@ def loadFoodInDatabase(request, food_dbid):
                 # response.write('foodNutVal should be aved')
                 food.nutritional_value=foodNutVal
                 food.save()
-                return redirect("/listFoodNutValues/"+str(food_dbid))
+                return redirect("/list-food-nutrient-values/"+str(food_dbid))
                 # return response
             else:
                 missingKeys=[k for k in necessaryKeys if k not in nutValue.keys()]

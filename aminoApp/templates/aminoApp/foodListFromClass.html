@@ -31,9 +31,9 @@
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="/listFoodsByEfficiency/?page=1">first</a>
+                    <a href="/list-foods-by-efficiency/?page=1">first</a>
                     <<
-                    <a href="/listFoodsByEfficiency/?page={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="/list-foods-by-efficiency/?page={{ page_obj.previous_page_number }}">previous</a>
                     <<
                 {% endif %}
                 <span class="page-current">
@@ -41,9 +41,9 @@
                 </span>
                 {% if page_obj.has_next %}
                     <<
-                    <a href="/listFoodsByEfficiency/?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="/list-foods-by-efficiency/?page={{ page_obj.next_page_number }}">next</a>
                     <<
-                    <a href="/listFoodsByEfficiency/?page={{ page_obj.paginator.num_pages }}">last</a>
+                    <a href="/list-foods-by-efficiency/?page={{ page_obj.paginator.num_pages }}">last</a>
                 {% endif %}
             </span>
         </div>
