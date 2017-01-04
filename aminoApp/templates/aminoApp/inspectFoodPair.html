@@ -17,10 +17,13 @@
 </p>
 
 <embed src={{ chart  }}>
-<p>  Best efficiency is {{ bestEfficiency|floatformat:2 }} for a proportion {{bestPropOne|floatformat:2}} of food one.</p>
+<p>  The best efficiency in terms of amino acid efficiency is {{ bestEfficiency|floatformat:2 }} for a proportion {{bestPropOne|floatformat:2}} of food one ({{ foodOne }}) and a proportion {{bestPropTwo|floatformat:2}} of food two ({{ foodTwo }}).</p>
 
 <p> Considering the vectors of amino acid values of the pair, their absolute angle is equal to {{ angle.absolute |floatformat:2}}
-the angle between their incomplete components (perpendicular to the complete protein space) is equal to {{ angle.incomplete |floatformat:2}}</p>
+the angle between their incomplete components (perpendicular to the complete protein space) is equal to {{ angle.incomplete |floatformat:2}}.
+<a target="_blank" href="/questions-answers-themes/#vectors-angles" title="More on angles between amino acid vectors.">
+    <i class="icon-help-circled"></i></a>
+</p>
 
 
 {% endblock %}

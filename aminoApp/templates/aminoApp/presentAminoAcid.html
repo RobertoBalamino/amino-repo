@@ -20,18 +20,7 @@
        </br> Formula: {{ aminoAcid.formula |safe}}.
     {% endif %}
 
-<h2>Foods rich in it (relatively to target pattern)</h2>
-    {% if highScores %}
-        <ul>
-        {% for aminoScore in highScores %}
-            <li><a href="/showFood/{{aminoScore.food.food_dbid}}">{{ aminoScore.food }} ({{ aminoScore.score|floatformat:2 }})</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No food rich in it.</p>
-    {% endif %}
-
-<h2>Foods rich in it (in quantity per 100 g)</h2>
+<h2>Foods rich in {{ aminoAcid.public_name }} (in quantity per 100 g)</h2>
     {% if highContentFoodsAndQuantities %}
         <ul>
         {% for foodQuant in highContentFoodsAndQuantities %}
@@ -42,8 +31,39 @@
         <p>No food rich in it.</p>
     {% endif %}
 
+    <a href="/list-foods-by-{{ aminoAcid.link_name }}/">>> More foods with the highest {{ aminoAcid.public_name }} density</a>
 
-<h2>Foods poor in it (relatively to target pattern)</h2>
+
+<h2>Foods rich in {{ aminoAcid }} (relatively to energy)</h2>
+
+    {% if highContentPerEnergyFoods %}
+        <ul>
+        <!--{% for food in highContentPerEnergyFoods %}-->
+        <!--    <li><a href="/showFood/{{food.food_dbid}}">{{ food }}</a></li>-->
+        <!--{% endfor %}-->
+        {% for foodQuant in highContentPerEnergyFoods %}
+            <li><a href="/showFood/{{foodQuant.food.food_dbid}}">{{ foodQuant.food }} ({{ foodQuant.quantity|floatformat:2 }} mg/kcal)</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No food rich in it.</p>
+    {% endif %}
+
+<a href="/list-foods-by-{{aminoAcid.link_name}}-per-energy/">>> More foods with the highest {{ aminoAcid.public_name }} per energy density</a>
+
+
+<h2>Foods rich in {{ aminoAcid }} (relatively to target pattern)</h2>
+    {% if highScores %}
+        <ul>
+        {% for aminoScore in highScores %}
+            <li><a href="/showFood/{{aminoScore.food.food_dbid}}">{{ aminoScore.food }} ({{ aminoScore.score|floatformat:2 }})</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No food rich in it.</p>
+    {% endif %}
+
+<h2>Foods poor in {{ aminoAcid }} (relatively to target pattern)</h2>
     {% if lowScores %}
         <ul>
         {% for aminoScore in lowScores %}

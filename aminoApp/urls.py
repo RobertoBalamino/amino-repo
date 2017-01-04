@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^list-amino-acids/', views.showAminoAcidList, name='listAminoAcid'),
     url(r'^targetPattern/(?P<patternId>[0-9]+)/$', views.presentTargetPattern, name='presentTargetPattern'),
     url(r'^questions-answers/$', views.showQuestionsAndAnswers, name='faq'),
+    url(r'^questions-answers-themes/$', views.showQuestionsAndAnswersByTheme, name='faq'),
     url(r'^literature-references/$', views.showLiteratureReferences, name='literature'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='aminoApp/robots.txt', content_type='text/plain')),
     # url(r'^robots\.txt$', direct_to_template, {'template': 'aminoApp/robots.txt', 'mimetype': 'text/plain'}),

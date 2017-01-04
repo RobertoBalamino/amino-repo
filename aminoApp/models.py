@@ -250,12 +250,20 @@ class TargetAminoPattern(models.Model):
     def __str__(self):
         return self.name
 
+class QuestionTheme(models.Model):
+    short_name = models.CharField(max_length=80)
+    long_name = models.CharField(max_length=300)
+    def __str__(self):
+        return str(self.short_name)
 
 class QuestionAnswer(models.Model):
     question = models.CharField(max_length=200)
     answer = models.TextField(null=True, blank=True)
     category = models.CharField(max_length=30, null=True, blank=True)
     showQuestion = models.NullBooleanField(default=True)
+    theme = models.ForeignKey(QuestionTheme, on_delete=models.CASCADE,null=True)
+    rank = models.FloatField(null=True, blank=True) # small rank first
+    short_string = models.CharField(max_length=50, null=True, blank=True)
     def __str__(self):
         if self.showQuestion:
             questionString = self.question
@@ -276,4 +284,5 @@ class ReferenceSupportsAnswer(models.Model):
     reference = models.ForeignKey(LiteratureReference, on_delete=models.CASCADE)
     answer = models.ForeignKey(QuestionAnswer, on_delete=models.CASCADE)
     def __str__(self):
-        return str(self.reference)
+        return str(self.reference)+' supports '+ str(self.answer)
+

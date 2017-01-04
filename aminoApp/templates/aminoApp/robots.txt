@@ -1,2 +1,3 @@
 User-agent: *
-Disallow: /choosePair/
+Disallow: /choose-pair/
+Disallow: /choose-pair

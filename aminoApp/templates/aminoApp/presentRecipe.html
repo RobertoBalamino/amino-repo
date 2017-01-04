@@ -18,9 +18,15 @@
     <h2>Description</h2>
         {{ recipe.description}}
     {% endif %}
+
+    {% if recipe.link%}
+    <p>Original recipe at <a href="{{recipe.link}}">{{recipe.link}}</a>.
+    </p>
+    {% endif %}
+
 <h2>Amino acids</h2>
 <p>Efficiency: {{efficiency|floatformat:2}}.
-<a target="_blank" href="/about_definitions/#efficiency" title="Essential amino acid efficiency relative to pattern 1. Click for more information on how this is defined.">
+<a target="_blank" href="/about-definitions/#efficiency" title="Essential amino acid efficiency relative to pattern 1. Click for more information on how this is defined.">
     <i class="icon-help-circled"></i></a>
 
 

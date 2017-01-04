@@ -23,7 +23,7 @@ All questions:
 
 {% for qAndA in qa_with_refs %}
   <h2 id="{{qAndA.qa.pk}}">{{qAndA.qa.question}} </h2>
-  <p>{{qAndA.qa.answer}}
+  <p>{{qAndA.qa.answer |safe}}
   </p>
   {% if qAndA.ref%}
     Further reading:

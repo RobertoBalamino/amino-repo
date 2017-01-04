@@ -28,7 +28,7 @@ This is a list of recipes with protein efficiency calculated based on the sum of
                 <!--<td>{{ recipe.pk }}</td>-->
                 <td><a href="/showRecipe/{{ recipe.pk }}/">{{ recipe.title }}</a> </td>
                 <td>{{ recipe.efficiency | floatformat:2 }} </td>
-                <td>{{ recipe.date_added}} </td>
+                <td>{{ recipe.date_added |date:"Y-m-d"}} </td>
             </tr>
         {% endfor %}
         </table>

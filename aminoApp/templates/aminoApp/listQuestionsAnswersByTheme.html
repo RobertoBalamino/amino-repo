@@ -1,0 +1,64 @@
+{% extends "aminoApp/baseAbout.html" %}
+
+
+{% block title %}Tetramino - Frequently asked questions about amino acids in human nutrition.{% endblock %}
+{% block description %}Frequently asked questions about amino acids and proteins in human nutrition, and how to combine them.{% endblock %}
+
+{% block content %}
+
+<h1>Frequently asked questions</h1>
+
+{% for theme in themes_with_questions %}
+    <h2>{{theme.theme.long_name}} </h2>
+
+    <ul>
+    {% for qAndA in theme.questions %}
+      <li>
+          <a href="#{{qAndA.qa.short_string}}">{{qAndA.qa.question}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+
+{% endfor %}
+
+</br>
+
+<!--All questions:-->
+<!--<ul>-->
+<!--{% for qAndA in qas %}-->
+<!--  <li>-->
+<!--      <a href="#{{qAndA.pk}}">{{qAndA.question}}</a>-->
+<!--  </li>-->
+<!--{% endfor %}-->
+<!--</ul>-->
+
+<!--{% for qAndA in qas %}-->
+<!--  <h2 id="{{qAndA.pk}}">{{qAndA.question}} </h2>-->
+<!--  {{qAndA.answer}}-->
+<!--{% endfor %}-->
+
+{% for theme in themes_with_questions %}
+    <h1>{{theme.theme}} </h1>
+    {% for qAndA in theme.questions %}
+      <h2 id="{{qAndA.qa.short_string}}">{{qAndA.qa.question}} </h2>
+      <p>{{qAndA.qa.answer |safe}}
+      </p>
+      {% if qAndA.ref%}
+        Further reading:
+        <ul>
+        {% for ref in  qAndA.ref%}
+            <li class="smallReference">
+            {{ref.reference_APA |safe}}
+            </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+
+{% endfor %}
+
+
+
+
+
+{% endblock %}

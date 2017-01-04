@@ -187,7 +187,7 @@ def analyseFoodPair(foodOne,foodTwo):
     solveBestProp=getBestProportionForFoodPair(foodOne,foodTwo)
     context['bestEfficiency']=solveBestProp['efficiency']
     context['bestPropOne']=solveBestProp['bestPropOne']
-
+    context['bestPropTwo']=1-context['bestPropOne']
     nameOfPair = foodOne.getNameBegin() + '-' + foodTwo.getNameBegin()
     context['pairName'] = nameOfPair
     # a) calculating efficiencies at different proportions (brute force)

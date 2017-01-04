@@ -4,19 +4,20 @@ from django.shortcuts import render, render_to_response
 from django.shortcuts import redirect
 #from django.http import Http404
 from django.utils import timezone
+from django.template import RequestContext
 # from django.urls import reverse
 from django.views import generic
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.utils.encoding import smart_text
 from django.db.models import Q #or in queryset
-from django.db.models import F
+from django.db.models import F, Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import numpy as np
 
 from .models import Food, NutritionalValue, RelativeAminoScore #, Ingredient, Menu
 from .models import Recipe, Ingredient, FoodPair, Nutriment, TargetAminoPattern, FoodCategory #, NutrientDefinition
-from .models import QuestionAnswer, LiteratureReference, ReferenceSupportsAnswer
+from .models import QuestionAnswer, LiteratureReference, ReferenceSupportsAnswer, QuestionTheme
 
 #from utilities.loadFromUsda import loadFoodNutrimentInfo
 from aminoApp.utilityFunctions import readFoodNutrimentInfo, getAminoEfficiencyFromNutrimentValue, getAminoProportionsOfComplete
@@ -683,13 +684,23 @@ def presentAminoAcid(request,link_name):
     internal_name = aminoDefinition.internal_name
     # high and low scores of foods for this amino acid
     scores = RelativeAminoScore.objects.filter(aminoAcid=aminoDefinition).order_by('score')
-    highScores = scores.filter(score__gt=1).order_by('-score')[0:20]
-    lowScores = scores.filter(score__lt=1)[0:20]
+    highScores = scores.filter(score__gt=1).order_by('-score')[0:10]
+    lowScores = scores.filter(score__lt=1)[0:10]
     filterProp = '-nutritional_value__'+internal_name
-    highContentFoods = Food.objects.order_by(filterProp)[0:20]
+    highContentFoods = Food.objects.order_by(filterProp)[0:10]
     highContentFoodsAndQuantities = [{'food':food,'quantity':getattr(food.nutritional_value,internal_name)} for food in highContentFoods]
+
+
+    sortNutrient = aminoDefinition
+    sortVar = 'nutritional_value__'+sortNutrient.internal_name
+    divNutrient = Nutriment.objects.get(public_name='energy')
+    divVar = 'nutritional_value__'+divNutrient.internal_name # 'prot'
+    highContentPerCalFoods = Food.objects.annotate(sortValue=F(sortVar)/F(divVar)).order_by('sortValue').reverse()[0:10]
+    highContentPerCalFoodsAndQuantities = [{'food':food,'quantity':1000*food.sortValue} for food in highContentPerCalFoods]
+
     # highContentFoods = [() for ]
-    context = {'aminoAcid': aminoDefinition,'highScores':highScores,'lowScores':lowScores,'highContentFoodsAndQuantities':highContentFoodsAndQuantities}
+    context = {'aminoAcid': aminoDefinition,'highScores':highScores,'lowScores':lowScores,
+    'highContentFoodsAndQuantities':highContentFoodsAndQuantities,'highContentPerEnergyFoods':highContentPerCalFoodsAndQuantities}
     return render(request, 'aminoApp/presentAminoAcid.html', context)
 
 def presentNutrient(request,internal_name):
@@ -718,7 +729,34 @@ def showQuestionsAndAnswers(request):
     context = {'qas': qas,'qa_with_refs':qa_with_refs}
     return render(request, 'aminoApp/listQuestionsAnswers.html', context)
 
+def showQuestionsAndAnswersByTheme(request):
+
+    allThemes = QuestionTheme.objects.all()
+    themes_with_questions = []
+    for theme in allThemes:
+        themeQas = QuestionAnswer.objects.filter(showQuestion=True).filter(theme=theme).order_by('rank')
+        qa_with_refs = []
+        for qa in themeQas:
+            ref_supporting_answer = ReferenceSupportsAnswer.objects.filter(answer=qa)
+            references = [refsup.reference for refsup in ref_supporting_answer]
+            qa_with_refs.append({'qa':qa,'ref':references})
+        if themeQas.exists():
+            themes_with_questions.append({'theme':theme,'questions':qa_with_refs})
+    context = {'themes_with_questions': themes_with_questions}
+    return render(request, 'aminoApp/listQuestionsAnswersByTheme.html', context)
+
+
 def showLiteratureReferences(request):
-    articles = LiteratureReference.objects.filter()
+    articles = LiteratureReference.objects.order_by('in_text')
     context = {'articles': articles}
     return render(request, 'aminoApp/listLiteratureReferences.html', context)
+
+
+def handler404(request):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+
