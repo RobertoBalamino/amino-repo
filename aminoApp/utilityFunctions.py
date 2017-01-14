@@ -35,6 +35,9 @@ def getCompleteAminoVector():
     completeAminoVector=completeProteinValue.getAminoVector()
     return completeAminoVector
 
+def getAminoAcidScore():
+    return 0
+
 def getAminoProportionsOfComplete(aminoVector):
     completeAminoVector= getCompleteAminoVector()
     aminoDiv=np.divide(aminoVector, completeAminoVector)

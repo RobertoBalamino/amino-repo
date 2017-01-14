@@ -63,7 +63,7 @@ class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
         # fields = '__all__'
-        exclude = ('efficiency', 'date_added', )
+        exclude = ('efficiency', 'aa_score', 'date_added', )
 
 IngredientFormSet = inlineformset_factory(Recipe, Ingredient, extra=3, fields=('food','quantity',))
 

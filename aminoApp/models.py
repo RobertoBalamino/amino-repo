@@ -138,6 +138,7 @@ class Food(models.Model):
     food_dbid = models.IntegerField(default=0)
     nutritional_value = models.ForeignKey('NutritionalValue', on_delete=models.CASCADE,null=True)
     efficiency = models.FloatField(null=True)
+    aa_score = models.TextField(null=True, blank=True)
     food_description = models.TextField(null=True, blank=True)
     picture_file = models.CharField(max_length=200, null=True, blank=True)
 
@@ -181,6 +182,7 @@ class Recipe(models.Model):
     link = models.CharField(max_length=80, null=True, blank=True)
     date_added = models.DateTimeField('date added', null=True, blank=True,auto_now_add=True)
     efficiency = models.FloatField(null=True)
+    aa_score = models.FloatField(null=True, blank=True)
     def __str__(self):
         return self.title
     def get_nutritional_value(self):

@@ -30,7 +30,20 @@ Look for complementary protein sources."{% endblock %}
 <p>Category: <a href="/food-category_{{food_cat.address_name}}/">{{ food_cat.name}}</a></p>
 {% endif %}
 
-<p>Efficiency: {{ food.efficiency | floatformat:2 }}</p>
+<p>Efficiency: {{ food.efficiency | floatformat:2 }}.
+<a target="_blank" href="/about-definitions/#efficiency" title="Essential amino acid efficiency relative to pattern 1. Click for more information on how this is defined.">
+    <i class="icon-help-circled"></i></a>
+</p>
+<p>Amino Acid Score:
+{% if food.aa_score > 100 %}
+> 100 ({{ food.aa_score | floatformat:0}}).
+{% else %}
+{{ food.aa_score | floatformat:0}}.
+{% endif %}
+<a target="_blank" href="/about-definitions/#score" title="Amino acid score relative to default pattern. Click for more information on how this is defined.">
+    <i class="icon-help-circled"></i></a>
+</p>
+
 
 <h2>Amino acid quantities (g per 100 g)</h2>
 <embed src={{ chartAbsolute}} height="400">

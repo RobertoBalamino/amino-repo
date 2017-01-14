@@ -11,15 +11,22 @@
 
 <h1>Definitions</h1>
 
+
+  <h2 id="targetPattern">Target pattern:</h2>
+  The target pattern or reference pattern is a pattern of (essential) amino acid quantities assumed to optimally correspond to a person's needs.
+  This target pattern might vary according to age, activity and other factors. For now, this website only considers one reference pattern described <a href="/targetPattern/1/">here</a>.
+
   <h2 id="efficiency">Efficiency:</h2>
   We define the (amino acid) efficiency of a food (or meal) as the largest compound obtainable from the given amino acids in proportions corresponding to the target pattern, divided by their total weight in the food.
   The value depends on the <a href="#targetPattern">target pattern</a>.
   This efficiency can take values between 0 and 1. The efficiency is equal to zero if (and only if) some essential amino acid is not present.
   The efficiency would be equal to one if the essential amino acids were given in the exact proportions of the target pattern.
 
-  <h2 id="targetPattern">Target pattern:</h2>
-  The target pattern or reference pattern is a pattern of (essential) amino acid quantities assumed to optimally correspond to a person's needs.
-  This target pattern might vary according to age, activity and other factors. For now, this website only considers one reference pattern described <a href="/targetPattern/1/">here</a>.
+  <h2 id="score">Amino acid score:</h2>
+  Considering a requirement pattern expressed in terms of essential amino acid quantities per gram of protein,
+  we define the amino acid score of a food (or meal, or diet) as the minimum of the ratios of amino acid densities (per gram of protein) therein to target amino acid densities.
+  We multiply the result by 100 to express a percentage. The result can be more than 100, in which case no essential amino acid is limiting.
+
 
   <h2 id="limiting">Limiting amino acid:</h2>
   For a given food, the amino acid for which the ratio of its present quantity to its quantity in the reference pattern is the lowest.

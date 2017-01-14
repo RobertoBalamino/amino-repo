@@ -600,6 +600,8 @@ def showRecipe(request,recipeid):
     # per grams of protein
     # chartPerProtein = getRequirementsPerGramProtein(foodValue)
     perGramProtInfo = getRequirementsPerGramProtein(recipeNutrValue)
+    recipe.aa_score = 100*min(perGramProtInfo['propOfRequirement'])
+    recipe.save()
     chartPerProtein = perGramProtInfo['chart']
     zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'],perGramProtInfo['color'],perGramProtInfo['amino_acid_link'])
     # zippedInfoPerGramProt = sorted(zippedInfoPerGramProt, key = lambda t: t[1])
@@ -656,6 +658,8 @@ def showFood(request,food_dbid):
     # per grams of protein
     # chartPerProtein = getRequirementsPerGramProtein(foodValue)
     perGramProtInfo = getRequirementsPerGramProtein(foodValue)
+    food.aa_score = 100*min(perGramProtInfo['propOfRequirement'])
+    food.save()
     # perGramProtInfo = {'chart':rendered_chart,'values':values,'required':required,'propOfRequirement':propOfRequirement}
     chartPerProtein = perGramProtInfo['chart']
     # zippedInfoPerGramProt = zip(perGramProtInfo['amino_acids'],perGramProtInfo['values'],perGramProtInfo['required'])
