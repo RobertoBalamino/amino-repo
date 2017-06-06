@@ -80,7 +80,7 @@ Macronutrient quantities (g) per 100 g
 
     {% for row in zippedInfoPerGramProt %}
         <tr>
-            <td><a href="/aminoAcid_{{row.4}}_g">{{row.0}}</a></td>
+            <td><a href="/amino-acid-{{row.0}}">{{row.0}}</a></td>
             <td><span class="{{row.3}}">{{row.1| floatformat:1 }}</span></td>
             <td>{{row.2| floatformat:0}}</td>
         </tr>

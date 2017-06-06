@@ -351,8 +351,10 @@ def showFoodTableNutrientOrder(request,nutrSortVar):
         foodList = paginator.page(paginator.num_pages)
 
     descriptionText = 'Foods sorted by '+nutrSortVar+' content per 100 g.'
+    pageTitle = 'Foods richest in '+ nutrSortVar
     columnTitle = sortNutrient.public_name+' ('+sortNutrient.unit+')'
-    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,'descriptionText':descriptionText,'columnTitle':columnTitle}
+    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,
+               'descriptionText':descriptionText,'pageTitle':pageTitle,'columnTitle':columnTitle}
     return render(request, 'aminoApp/foodTableMoreGeneral.html', context)
 
 def showFoodTableNutrientDividedOrder(request,nutrSortVar,nutrDivVar):
@@ -379,9 +381,11 @@ def showFoodTableNutrientDividedOrder(request,nutrSortVar,nutrDivVar):
 
     divText = nutrDivVar+' ('+divNutrient.unit+')'
     descriptionText = 'Foods sorted by '+nutrSortVar+' content (g) divided by '+divText+'.'
+    pageTitle = 'Foods richest in '+ nutrSortVar + ' by ' + divText
     columnTitle = sortNutrient.public_name+' ('+sortNutrient.unit+')/'+divText
 
-    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,'descriptionText':descriptionText,'columnTitle':columnTitle}
+    context = {'foodList': foodList,'sortNutrient':sortNutrient,'varName': nutrSortVar,
+               'descriptionText':descriptionText,'pageTitle':pageTitle,'columnTitle':columnTitle}
     return render(request, 'aminoApp/foodTableMoreGeneral.html', context)
 
 
@@ -409,7 +413,7 @@ class FoodPairList(ListView):
     paginate_by = 15
 
 class FoodListByEfficiency(ListView):
-    queryset = Food.objects.order_by('efficiency') #'-pk' '-bestEfficiency'
+    queryset = Food.objects.order_by('-efficiency') #'-pk' '-bestEfficiency'
     template_name = 'aminoApp/foodListFromClass.html'
     context_object_name = 'foodList'
     paginate_by = 25
@@ -502,7 +506,7 @@ def about(request):
     return render(request, 'aminoApp/about.html')
 
 def aboutSomething(request,subject):
-    if subject in ('definitions','sources','examples','contact','limitations','disclaimer','further_reading','FAQ'):
+    if subject in ('definitions','sources','examples','contact','limitations','disclaimer','further_reading','FAQ','links'):
         templateAddress = 'aminoApp/about_'+subject+'.html'
         return render(request, templateAddress)
     else:
