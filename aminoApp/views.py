@@ -647,7 +647,7 @@ def showFood(request,food_dbid):
     # get graph (absolute amino acid values)
     chartAbsolute = getFoodAminoPlotAbsolute(food)
     # amino scores: min and max
-    foodAminoVector=food.nutritional_value.getAminoVector()
+    foodAminoVector = food.nutritional_value.getAminoVector()
     foodAminoProportions = getAminoProportionsOfComplete(foodAminoVector)
     amino_acid_names = getAminoAcidNames()
     projProps = foodAminoProportions['propsOfProj']
